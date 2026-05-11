@@ -1,0 +1,33 @@
+/* Sidebar layout */
+.fi-sidebar {
+    background-color: #a0adbc;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Safe text color */
+.fi-sidebar a,
+.fi-sidebar span {
+    color: #010917;
+}
+
+/* Topbar */
+.fi-topbar {
+    background-color: #ffffff;
+}
+
+/* Main content */
+.fi-main {
+    background-color: #fbfbfb;
+}
+
+/* Icon size */
+.fi-sidebar .fi-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Hover */
+.fi-sidebar-item:hover .fi-icon {
+    opacity: 1;
+}
