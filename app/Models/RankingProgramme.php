@@ -9,6 +9,7 @@ class RankingProgramme extends Model
      protected $fillable = [
         'programme_name',
         'ranking_type',
+        'category_id',
         'status',
         'sort_order',
     ];

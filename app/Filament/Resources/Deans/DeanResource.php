@@ -23,6 +23,7 @@ use App\Filament\Resources\Deans\Pages\ListDeans;
 use App\Filament\Resources\Deans\Pages\CreateDean;
 use App\Filament\Resources\Deans\Pages\EditDean;
 
+
 class DeanResource extends Resource
 {
     protected static ?string $model = Member::class;
@@ -49,8 +50,8 @@ class DeanResource extends Resource
 
             TextInput::make('designation'),
 
-            Hidden::make('type')
-                ->default('Deans And Administration'),
+            TextInput::make('type')
+                ->default('Deans And Administration')->readonly(),
 
             Hidden::make('type_code')
                 ->default('D&A'),

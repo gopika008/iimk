@@ -52,8 +52,8 @@ class BoardOfGovernorResource extends Resource
 
             TextInput::make('designation'),
 
-            Hidden::make('type')
-                ->default('Board of Governors'),
+            TextInput::make('type')
+                ->default('Board of Governors')->readonly(),
 
             Hidden::make('type_code')
                 ->default('BOG'),
@@ -82,6 +82,7 @@ class BoardOfGovernorResource extends Resource
                     ->searchable(),
 
                 TextColumn::make('designation'),
+                TextColumn::make('type'),
 
                 TextColumn::make('created_at')
                     ->dateTime(),

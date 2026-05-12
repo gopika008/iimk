@@ -9,6 +9,7 @@ use App\Filament\Resources\RankingProgrammes\Schemas\RankingProgrammeForm;
 use App\Filament\Resources\RankingProgrammes\Tables\RankingProgrammesTable;
 use App\Models\RankingProgramme;
 use BackedEnum;
+use Filament\Forms\Components\Hidden;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -30,13 +31,15 @@ use Filament\Forms\Components\{
     Toggle,
     Select
 };
+use UnitEnum;
 
 class RankingProgrammeResource extends Resource
 {
     protected static ?string $model = RankingProgramme::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
+    protected static ?string $navigationLabel = 'Accreditation & Rankings';
+    protected static string|UnitEnum|null $navigationGroup = 'The Institute';
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
@@ -53,7 +56,19 @@ class RankingProgrammeResource extends Resource
                         'international' => 'International',
                         'national' => 'National',
                     ])
-                    ->required(),
+                    ->required()
+                    ->live()
+                    ->afterStateUpdated(function ($state, callable $set) {
+
+                        if ($state === 'international') {
+                            $set('category_id', 1);
+                        }
+
+                        if ($state === 'national') {
+                            $set('category_id', 2);
+                        }
+                    }),
+                    Hidden::make('category_id'),
 
                 TextInput::make('sort_order')
                     ->numeric()
