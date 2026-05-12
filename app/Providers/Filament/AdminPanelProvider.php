@@ -18,6 +18,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+     
 use Filament\Support\Assets\Css;
 use Filament\View\PanelsRenderHook;
 
@@ -25,7 +26,7 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel
+        return $panel//->default()
             ->brandName(fn() => view('branding.iim'))
             ->id('admin')
             ->path('admin')
@@ -34,15 +35,16 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Indigo,
                 //'primary' => Color::hex('#163079'),
             ])
-            ->renderHook(
-            PanelsRenderHook::HEAD_END,
-            fn () => '<link rel="stylesheet" href="/css/filament.css">'
-        )
+       ->renderHook(
+    PanelsRenderHook::BODY_START,
+    fn () => ''
+)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
-                Dashboard::class,
+                \App\Filament\Pages\AdminDashboard::class,
             ])
+            ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,

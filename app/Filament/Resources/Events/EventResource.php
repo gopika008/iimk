@@ -22,10 +22,12 @@ use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
+use UnitEnum;
 class EventResource extends Resource
 {
     protected static ?string $model = Event::class;
-
+protected static ?string $navigationLabel = 'Events';
+    protected static string|UnitEnum|null $navigationGroup = 'The Institute';
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'name';
@@ -112,7 +114,11 @@ class EventResource extends Resource
                 ->boolean(),
 
         ])
-        ->defaultSort('start_date', 'desc');
+        ->defaultSort('start_date', 'desc')
+        ->actions([
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
+            ]);
     }
 
     public static function getRelations(): array

@@ -9,6 +9,7 @@ class Member extends Model
     protected $fillable = [
         'name',
         'designation',
+        'description',
         'type',
         'type_code',
         'image',

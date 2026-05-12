@@ -25,3 +25,8 @@ Route::get('/lang/{locale}', function ($locale) {
     }
     return back();
 });
+Route::get('/admins', function () {
+    return view('admin.dashboard');
+});
+Route::get('/deans', [HomeController::class, 'dean'])->name('deans.index');
+Route::get('/rankings', [HomeController::class, 'rankings'])->name('rankings.index');

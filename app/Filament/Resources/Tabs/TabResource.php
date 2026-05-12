@@ -76,7 +76,10 @@ class TabResource extends Resource
             TextColumn::make('name'),
             TextColumn::make('slug'),
             TextColumn::make('order'),
-        ]);
+        ])->actions([
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
+            ]);
     }
 
     public static function getRelations(): array

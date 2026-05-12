@@ -24,6 +24,8 @@ use Filament\Tables\Columns\{
 use Filament\Actions\EditAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\BulkActionGroup;
+use App\Helpers\Translator;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\{
     TextInput,
     FileUpload,
@@ -54,132 +56,200 @@ class FacultyResource extends Resource
                 ->hidden(fn() => auth()->user()->hasRole('faculty')),
 
             Tabs::make('Languages')
-                ->tabs([
+    ->tabs([
 
-                    Tab::make('English')
-                        ->schema([
+        /*
+        |--------------------------------------------------------------------------
+        | ENGLISH
+        |--------------------------------------------------------------------------
+        */
 
-                            TextInput::make('name.en')
-                                ->label('Name')
-                                ->required(),
+        Tab::make('English')
+            ->schema([
 
-                            TextInput::make('designation.en')
-                                ->label('Designation'),
+                TextInput::make('name.en')
+                    ->label('Name')
+                    ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn($state, callable $set) =>
+                        $set('name.hi', Translator::toHindi($state))
+                    ),
 
-                            TextInput::make('area.en')
-                                ->label('Area'),
-                            TextInput::make('office.en')
-                                ->label('Office'),
-                            TextInput::make('highest_education.en')
-                                ->label('Highest Education'),
+                TextInput::make('designation.en')
+                    ->label('Designation')
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn($state, callable $set) =>
+                        $set('designation.hi', Translator::toHindi($state))
+                    ),
 
-                            RichEditor::make('qualification.en')
-                                ->label('Highest Education Details')
-                                ->columnSpanFull()
-                                ->toolbarButtons([
-                                    'bold',
-                                    'italic',
-                                    'underline',
-                                    'strike',
-                                    'subscript',
-                                    'superscript',
-                                    'link',
-                                    'undo',
-                                    'redo',
-                                ]),
-                            RichEditor::make('experience.en')
-                                ->label('Experience Summary')
-                                ->columnSpanFull()
-                                ->toolbarButtons([
-                                    'bold',
-                                    'italic',
-                                    'underline',
-                                    'strike',
-                                    'subscript',
-                                    'superscript',
-                                    'link',
-                                    'undo',
-                                    'redo',
-                                ]),
-                            RichEditor::make('profile.en')
-                                ->label('Profile Highlights')
-                                ->columnSpanFull()
-                                ->toolbarButtons([
-                                    'bold',
-                                    'italic',
-                                    'underline',
-                                    'strike',
-                                    'subscript',
-                                    'superscript',
-                                    'link',
-                                    'undo',
-                                    'redo',
-                                ]),
-                        ]),
+                TextInput::make('area.en')
+                    ->label('Area')
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn($state, callable $set) =>
+                        $set('area.hi', Translator::toHindi($state))
+                    ),
 
-                    Tab::make('Hindi')
-                        ->schema([
+                TextInput::make('office.en')
+                    ->label('Office')
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn($state, callable $set) =>
+                        $set('office.hi', Translator::toHindi($state))
+                    ),
 
-                            TextInput::make('name.hi')
-                                ->label('नाम'),
+                TextInput::make('highest_education.en')
+                    ->label('Highest Education')
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn($state, callable $set) =>
+                        $set('highest_education.hi', Translator::toHindi($state))
+                    ),
 
-                            TextInput::make('designation.hi')
-                                ->label('पद'),
-                            TextInput::make('area.hi')
-                                ->label('क्षेत्र'),
+                /*
+                |--------------------------------------------------------------------------
+                | QUALIFICATION
+                |--------------------------------------------------------------------------
+                */
 
-                            TextInput::make('office.hi')
-                                ->label('कार्यालय'),
+                RichEditor::make('qualification.en')
+                    ->label('Highest Education Details')
+                    ->columnSpanFull()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn($state, callable $set) =>
+                        $set('qualification.hi', Translator::toHindi($state))
+                    )
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strike',
+                        'subscript',
+                        'superscript',
+                        'link',
+                        'undo',
+                        'redo',
+                    ]),
 
+                /*
+                |--------------------------------------------------------------------------
+                | EXPERIENCE
+                |--------------------------------------------------------------------------
+                */
 
-                            TextInput::make('highest_education.hi')
-                                ->label('उच्चतम शिक्षा'),
+                RichEditor::make('experience.en')
+                    ->label('Experience Summary')
+                    ->columnSpanFull()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn($state, callable $set) =>
+                        $set('experience.hi', Translator::toHindi($state))
+                    )
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strike',
+                        'subscript',
+                        'superscript',
+                        'link',
+                        'undo',
+                        'redo',
+                    ]),
 
-                            RichEditor::make('qualification.hi')
-                                ->label('उच्चतम शिक्षा विवरण')
-                                ->columnSpanFull()
-                                ->toolbarButtons([
-                                    'bold',
-                                    'italic',
-                                    'underline',
-                                    'strike',
-                                    'subscript',
-                                    'superscript',
-                                    'link',
-                                    'undo',
-                                    'redo',
-                                ]),
-                            RichEditor::make('experience.hi')
-                                ->label('अनुभव सारांश')
-                                ->columnSpanFull()
-                                ->toolbarButtons([
-                                    'bold',
-                                    'italic',
-                                    'underline',
-                                    'strike',
-                                    'subscript',
-                                    'superscript',
-                                    'link',
-                                    'undo',
-                                    'redo',
-                                ]),
-                            RichEditor::make('profile.hi')
-                                ->label('प्रोफ़ाइल हाइलाइट्स')
-                                ->columnSpanFull()
-                                ->toolbarButtons([
-                                    'bold',
-                                    'italic',
-                                    'underline',
-                                    'strike',
-                                    'subscript',
-                                    'superscript',
-                                    'link',
-                                    'undo',
-                                    'redo',
-                                ]),
-                        ]),
-                ])
-                ->columnSpanFull(),
+                /*
+                |--------------------------------------------------------------------------
+                | PROFILE
+                |--------------------------------------------------------------------------
+                */
+
+                RichEditor::make('profile.en')
+                    ->label('Profile Highlights')
+                    ->columnSpanFull()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn($state, callable $set) =>
+                        $set('profile.hi', Translator::toHindi($state))
+                    )
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strike',
+                        'subscript',
+                        'superscript',
+                        'link',
+                        'undo',
+                        'redo',
+                    ]),
+            ]),
+
+        /*
+        |--------------------------------------------------------------------------
+        | HINDI
+        |--------------------------------------------------------------------------
+        */
+
+        Tab::make('Hindi')
+            ->schema([
+
+                TextInput::make('name.hi')
+                    ->label('नाम'),
+
+                TextInput::make('designation.hi')
+                    ->label('पद'),
+
+                TextInput::make('area.hi')
+                    ->label('क्षेत्र'),
+
+                TextInput::make('office.hi')
+                    ->label('कार्यालय'),
+
+                TextInput::make('highest_education.hi')
+                    ->label('उच्चतम शिक्षा'),
+
+                RichEditor::make('qualification.hi')
+                    ->label('उच्चतम शिक्षा विवरण')
+                    ->columnSpanFull()
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strike',
+                        'subscript',
+                        'superscript',
+                        'link',
+                        'undo',
+                        'redo',
+                    ]),
+
+                RichEditor::make('experience.hi')
+                    ->label('अनुभव सारांश')
+                    ->columnSpanFull()
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strike',
+                        'subscript',
+                        'superscript',
+                        'link',
+                        'undo',
+                        'redo',
+                    ]),
+
+                RichEditor::make('profile.hi')
+                    ->label('प्रोफ़ाइल हाइलाइट्स')
+                    ->columnSpanFull()
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strike',
+                        'subscript',
+                        'superscript',
+                        'link',
+                        'undo',
+                        'redo',
+                    ]),
+            ]),
+    ])
+    ->columnSpanFull(),
 
             TextInput::make('phone'),
 

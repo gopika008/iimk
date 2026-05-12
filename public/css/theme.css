@@ -1,0 +1,104 @@
+/* =========================
+   MODERN SAAS DESIGN SYSTEM
+   (Stripe / Linear inspired)
+========================= */
+
+:root {
+    --bg: #f5f7fb;
+    --panel: #ffffff;
+    --text: #0f172a;
+    --muted: #64748b;
+    --primary: #4f46e5;
+}
+
+/* GLOBAL */
+body {
+    background: var(--bg) !important;
+    font-family: ui-sans-serif, system-ui;
+    color: var(--text);
+}
+
+/* ================= SIDEBAR ================= */
+.fi-sidebar {
+    background: #0a0f1c !important;
+    border-right: none !important;
+    width: 260px;
+}
+
+.fi-sidebar-nav {
+    padding: 10px;
+}
+
+.fi-sidebar-nav-item a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    color: #cbd5e1 !important;
+    transition: 0.2s ease;
+}
+
+.fi-sidebar-nav-item a:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateX(3px);
+}
+
+/* ACTIVE ITEM */
+.fi-sidebar-nav-item a[aria-current="page"] {
+    background: rgba(79,70,229,0.25);
+    color: white !important;
+}
+
+/* ================= TOP BAR ================= */
+.fi-topbar {
+    background: var(--bg) !important;
+    border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+    padding: 14px 20px !important;
+}
+
+/* Search + actions alignment */
+.fi-topbar nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ================= MAIN CONTENT ================= */
+.fi-main {
+    background: transparent !important;
+}
+
+/* ================= CARDS ================= */
+.fi-section,
+.fi-wi-widget,
+.fi-ta-table {
+    background: var(--panel) !important;
+    border-radius: 18px !important;
+    border: 1px solid rgba(0,0,0,0.05) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
+    transition: 0.2s ease;
+}
+
+.fi-section:hover,
+.fi-wi-widget:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.08) !important;
+}
+
+/* ================= BUTTONS ================= */
+.fi-btn-primary {
+    background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
+    border-radius: 12px !important;
+    border: none !important;
+    box-shadow: 0 8px 20px rgba(79,70,229,0.25);
+}
+
+.fi-btn-primary:hover {
+    transform: translateY(-1px);
+}
+
+/* ================= REMOVE FILAMENT FEEL ================= */
+.fi-logo {
+    display: none !important;
+}

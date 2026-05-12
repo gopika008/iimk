@@ -19,13 +19,15 @@ use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\Hidden;
-
+use UnitEnum;
 class MemberResource extends Resource
 {
-    protected static ?string $model = Member::class;
+    // protected static ?string $model = Member::class;
+    // protected static ?string $navigationLabel = 'Members';
+    // protected static string|UnitEnum|null $navigationGroup = 'The Institute';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
+    // protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+protected static bool $shouldRegisterNavigation = false;
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
@@ -92,7 +94,11 @@ class MemberResource extends Resource
                 TextColumn::make('created_at')
                     ->dateTime(),
             ])
-            ->defaultSort('created_at', 'desc');
+            ->defaultSort('created_at', 'desc')
+            ->actions([
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
+            ]);
     }
 
     public static function getRelations(): array

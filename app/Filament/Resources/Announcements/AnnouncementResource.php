@@ -64,7 +64,11 @@ class AnnouncementResource extends Resource
                 Tables\Columns\TextColumn::make('display_order'),
             ])
             ->defaultSort('display_order')
-            ->reorderable('display_order'); // 🔥 THIS ENABLES DRAG & DROP
+            ->reorderable('display_order') // 🔥 THIS ENABLES DRAG & DROP
+            ->actions([
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
+            ]);
     }
     public static function getRelations(): array
     {
