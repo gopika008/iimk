@@ -53,11 +53,11 @@ class DeanResource extends Resource
             TextInput::make('designation'),
             Select::make('role')
                 ->options([
-                    'faculty_administration' => 'DEAN (Faculty Administration & Development)',
-                    'executive_education' => 'DEAN (Executive Education)',
-                    'programmes' => 'DEAN (Programmes)',
-                    'associate' => 'ASSOCIATE DEAN (Kochi Campus)',
-                    'executive' => 'Executive Chair - GLOBE',
+                    'DEAN (Faculty Administration & Development)' => 'DEAN (Faculty Administration & Development)',
+                    'DEAN (Executive Education)' => 'DEAN (Executive Education)',
+                    'DEAN (Programmes)' => 'DEAN (Programmes)',
+                    'ASSOCIATE DEAN (Kochi Campus)' => 'ASSOCIATE DEAN (Kochi Campus)',
+                    'Executive Chair - GLOBE' => 'Executive Chair - GLOBE',
                 ])
                 ->required(),
             TextInput::make('type')
@@ -68,9 +68,16 @@ class DeanResource extends Resource
             RichEditor::make('description')
                 ->columnSpanFull(),    
 
-            FileUpload::make('image')
-                ->image()
-                ->directory('members'),
+            
+
+             FileUpload::make('image')
+                        ->image()
+                        ->disk('public')
+                        ->directory('members')
+                        ->visibility('public')
+                        ->imagePreviewHeight('150')
+                        ->openable()
+                        ->downloadable() ,   
 
             TextInput::make('url')
                 ->url()

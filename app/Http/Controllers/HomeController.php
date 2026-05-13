@@ -7,7 +7,6 @@ use App\Models\Announcement;
 use App\Models\Member;
 use App\Models\Faculty;
 use App\Models\Ranking;
-use App\Models\ResearchNewsletter;
 
 class HomeController extends Controller
 {
@@ -38,9 +37,9 @@ class HomeController extends Controller
     }
     public function dean()
     {
-        $members = Member::orderBy('created_at')->get();
+        $members = Member::where('type_code', 'D&A')->orderBy('created_at')->get();
 
-        return view('deans', compact('members'));
+        return view('pages.about.deans', compact('members'));
     }
     public function rankings()
     {
@@ -55,20 +54,5 @@ class HomeController extends Controller
             ->getRankings('national', $years);
 
         return view('rankings_view', $data);
-    }
-     public function news_letters(Request $request)
-    {
-        $newsletters = ResearchNewsletter::where('is_active', true)
-            ->latest()
-            ->get();
-
-        $selectedNewsletter = $request->newsletter
-            ? ResearchNewsletter::find($request->newsletter)
-            : $newsletters->first();
-
-        return view(
-            'frontend.research-newsletters',
-            compact('newsletters', 'selectedNewsletter')
-        );
     }
 }

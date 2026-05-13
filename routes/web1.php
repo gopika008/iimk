@@ -28,13 +28,13 @@ Route::get('/lang/{locale}', function ($locale) {
 Route::get('/admins', function () {
     return view('admin.dashboard');
 });
-Route::get('/about/deans', [HomeController::class, 'dean'])->name('deans.index');
+Route::get('/deans', [HomeController::class, 'dean'])->name('deans.index');
 Route::get('/rankings', [HomeController::class, 'rankings'])->name('rankings.index');
 
 Route::view('/about', 'pages.about.index')->name('about.index');
 Route::view('/about/director', 'pages.about.director')->name('about.director');
 Route::view('/about/board-of-governors', 'pages.about.board-of-governors')->name('about.bog');
-//Route::view('/about/deans', 'pages.about.deans')->name('about.deans');
+Route::view('/about/deans', 'pages.about.deans')->name('about.deans');
 Route::view('/about/rti/organization-and-function', 'pages.about.rti.organization-and-function')
     ->name('about.rti.organization-and-function');
 Route::view('/about/rti/budget-and-programmes', 'pages.about.rti.budget-and-programmes')
