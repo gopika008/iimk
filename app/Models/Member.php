@@ -9,6 +9,8 @@ class Member extends Model
     protected $fillable = [
         'name',
         'designation',
+        'organisation',
+        'role',
         'description',
         'type',
         'type_code',

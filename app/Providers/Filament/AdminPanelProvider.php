@@ -2,7 +2,7 @@
 
 namespace App\Providers\Filament;
 
-//use Filament\Http\Middleware\Authenticate;
+use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -31,14 +31,15 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(false)
+            //->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::Indigo,
                 //'primary' => Color::hex('#163079'),
             ])
-       ->renderHook(
-    PanelsRenderHook::BODY_START,
-    fn () => ''
-)
+//        ->renderHook(
+//     PanelsRenderHook::BODY_START,
+//     fn () => ''
+// )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
@@ -60,9 +61,9 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+            ])
+            ->authMiddleware([
+                Authenticate::class,
             ]);
-            // ->authMiddleware([
-            //     Authenticate::class,
-            // ]);
     }
 }

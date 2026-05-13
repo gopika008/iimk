@@ -30,3 +30,21 @@ Route::get('/admins', function () {
 });
 Route::get('/deans', [HomeController::class, 'dean'])->name('deans.index');
 Route::get('/rankings', [HomeController::class, 'rankings'])->name('rankings.index');
+
+Route::view('/about', 'pages.about.index')->name('about.index');
+Route::view('/about/director', 'pages.about.director')->name('about.director');
+Route::view('/about/board-of-governors', 'pages.about.board-of-governors')->name('about.bog');
+Route::view('/about/deans', 'pages.about.deans')->name('about.deans');
+
+Route::view('/about/rti/organization-and-function', 'pages.about.rti.organization-and-function')
+    ->name('about.rti.organization-and-function');
+Route::view('/about/rti/budget-and-programmes', 'pages.about.rti.budget-and-programmes')
+    ->name('about.rti.budget-and-programmes');
+Route::view('/about/rti/publicity-and-public-interface', 'pages.about.rti.publicity-and-public-interface')
+    ->name('about.rti.publicity-and-public-interface');
+Route::view('/about/rti/e-governance', 'pages.about.rti.e-governance')
+    ->name('about.rti.e-governance');
+Route::view('/about/rti/information-as-may-be-prescribed', 'pages.about.rti.information-as-may-be-prescribed')
+    ->name('about.rti.information-as-may-be-prescribed');
+Route::view('/about/rti/information-disclosed-on-own-initiative', 'pages.about.rti.information-disclosed-on-own-initiative')
+    ->name('about.rti.information-disclosed-on-own-initiative');
