@@ -5,8 +5,6 @@ namespace App\Filament\Resources\VisitingProfessors;
 use App\Filament\Resources\VisitingProfessors\Pages\CreateVisitingProfessor;
 use App\Filament\Resources\VisitingProfessors\Pages\EditVisitingProfessor;
 use App\Filament\Resources\VisitingProfessors\Pages\ListVisitingProfessors;
-use App\Filament\Resources\VisitingProfessors\Schemas\VisitingProfessorForm;
-use App\Filament\Resources\VisitingProfessors\Tables\VisitingProfessorsTable;
 // use App\Models\VisitingProfessor;
 use App\Models\Member;
 use BackedEnum;
