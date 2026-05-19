@@ -5,8 +5,7 @@ namespace App\Filament\Resources\RankingProgrammes;
 use App\Filament\Resources\RankingProgrammes\Pages\CreateRankingProgramme;
 use App\Filament\Resources\RankingProgrammes\Pages\EditRankingProgramme;
 use App\Filament\Resources\RankingProgrammes\Pages\ListRankingProgrammes;
-use App\Filament\Resources\RankingProgrammes\Schemas\RankingProgrammeForm;
-use App\Filament\Resources\RankingProgrammes\Tables\RankingProgrammesTable;
+
 use App\Models\RankingProgramme;
 use BackedEnum;
 use Filament\Forms\Components\Hidden;
@@ -19,15 +18,10 @@ use Filament\Tables\Columns\{
     BadgeColumn,
     IconColumn,
 };
-use Filament\Actions\EditAction;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\BulkActionGroup;
-use App\Helpers\Translator;
-use Filament\Forms\Components\Actions\Action;
+
 use Filament\Forms\Components\{
     TextInput,
-    FileUpload,
-    RichEditor,
     Toggle,
     Select
 };

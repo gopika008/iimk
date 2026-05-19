@@ -51,7 +51,6 @@ class DeanResource extends Resource
                 ->required(),
 
             TextInput::make('designation'),
-
             Select::make('role')
                 ->options([
                     'DEAN (Faculty Administration & Development)' => 'DEAN (Faculty Administration & Development)',
@@ -102,7 +101,6 @@ class DeanResource extends Resource
             TextInput::make('url')
                 ->url()
                 ->prefix('https://'),
-
         ]);
     }
 

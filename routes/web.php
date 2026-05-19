@@ -3,8 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\FacultyController;
+
 
 // LOGIN
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.login');

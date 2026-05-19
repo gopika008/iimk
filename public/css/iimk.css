@@ -1416,6 +1416,7 @@ body {
     margin: .25rem 0 0;
     line-height: 1.65;
 }
+<<<<<<< HEAD
 
 /* deanas */
 .leader-grid {
@@ -5631,3 +5632,5 @@ body {
         grid-auto-rows: 230px;
     }
 }
+=======
+>>>>>>> e06d5e3c58335175348d9bf920e0650f22442e40

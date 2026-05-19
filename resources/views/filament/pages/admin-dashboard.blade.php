@@ -1,5 +1,9 @@
 <x-filament-panels::page>
+<<<<<<< HEAD
 
+=======
+@vite(['resources/css/filament\/admin/theme.css', 'resources/js/app.js'])
+>>>>>>> e06d5e3c58335175348d9bf920e0650f22442e40
     <!-- CUSTOM APP HEADER (NOT FILAMENT STYLE) -->
     <div class="flex items-center justify-between mb-10">
 
