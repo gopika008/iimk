@@ -11,7 +11,7 @@ class RankingValue extends Model
         'ranking_year',
         'rank_scope',
         'rank_value',
-        'rank_url',
+        'rank_link',
     ];
 
     public function programme()

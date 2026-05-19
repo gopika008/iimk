@@ -15,8 +15,8 @@ class Ranking extends Model
             ->orderBy('sort_order', 'ASC')
             ->get()
             ->toArray();
-
-
+            
+           
 
         foreach ($programmes as &$programme) {
             $values = RankingValue::where('programme_id', $programme['id'])

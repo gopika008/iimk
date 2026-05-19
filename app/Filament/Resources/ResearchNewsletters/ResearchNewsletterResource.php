@@ -5,7 +5,8 @@ namespace App\Filament\Resources\ResearchNewsletters;
 use App\Filament\Resources\ResearchNewsletters\Pages\CreateResearchNewsletter;
 use App\Filament\Resources\ResearchNewsletters\Pages\EditResearchNewsletter;
 use App\Filament\Resources\ResearchNewsletters\Pages\ListResearchNewsletters;
-
+use App\Filament\Resources\ResearchNewsletters\Schemas\ResearchNewsletterForm;
+use App\Filament\Resources\ResearchNewsletters\Tables\ResearchNewslettersTable;
 use App\Models\ResearchNewsletter;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -39,7 +40,7 @@ class ResearchNewsletterResource extends Resource
                 ->visibility('public')
                 ->required(),
 
-
+            
         ]);
     }
 

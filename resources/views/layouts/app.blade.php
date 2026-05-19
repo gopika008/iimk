@@ -10,11 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-<<<<<<< HEAD
   <link rel="stylesheet" href="{{ asset('css/iimk.css') }}?v={{ time() }}">
-=======
-  <link href="{{ asset('css/iimk.css') }}" rel="stylesheet">
->>>>>>> e06d5e3c58335175348d9bf920e0650f22442e40
   @stack('styles')
 </head>
 <body>
@@ -27,11 +23,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ asset('js/iimk.js') }}"></script>
   @stack('scripts')
-<<<<<<< HEAD
   @if(request()->is('international-relations*'))
     @include('partials.ir-floating-enquiry')
 @endif
-=======
->>>>>>> e06d5e3c58335175348d9bf920e0650f22442e40
 </body>
 </html>
