@@ -18,11 +18,12 @@ use Filament\Forms\Components\{
     FileUpload,
 };
 use Filament\Tables\Columns\TextColumn;
-
+use UnitEnum;
 class AnnualReportResource extends Resource
 {
     protected static ?string $model = AnnualReport::class;
-
+     protected static ?string $navigationLabel = 'Annual Reports';
+    protected static string|UnitEnum|null $navigationGroup = 'The Institute';
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'name';
@@ -64,7 +65,11 @@ class AnnualReportResource extends Resource
             TextColumn::make('created_at')
                 ->dateTime(),
         ])
-        ->defaultSort('year', 'desc');
+        ->defaultSort('year', 'desc')
+        ->actions([
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
+            ]);
     }
 
     public static function getRelations(): array

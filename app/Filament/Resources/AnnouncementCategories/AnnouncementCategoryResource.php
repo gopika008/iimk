@@ -68,7 +68,11 @@ protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMega
             TextColumn::make('display_order'),
             IconColumn::make('status')->boolean(),
         ])
-            ->defaultSort('display_order');
+            ->defaultSort('display_order')
+            ->actions([
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
+            ]);
     }
 
     public static function getRelations(): array

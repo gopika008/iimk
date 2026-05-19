@@ -118,7 +118,11 @@ public static function form(Schema $schema): Schema
             TextColumn::make('heading'),
 
             TextColumn::make('order'),
-        ]);
+        ])
+        ->actions([
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
+            ]);
     }
 
     public static function getRelations(): array

@@ -2,13 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
 use App\Models\Announcement;
-use App\Models\User;
+use App\Models\Member;
 use App\Models\Faculty;
+use App\Models\Ranking;
 
 class HomeController extends Controller
 {
+
+    protected $RankingModel;
+
+    public function __construct()
+    {
+        $this->RankingModel = new Ranking();
+    }
     public function index()
     {
         $announcements = Announcement::active()
@@ -26,5 +34,30 @@ class HomeController extends Controller
             ->findOrFail($id);
 
         return view('faculty_profile', compact('faculty'));
+    }
+    public function dean()
+    {
+        $members = Member::where('type_code', 'D&A')->orderBy('created_at')->get();
+       // dd($members);
+
+        return view('pages.about.deans', compact('members'));
+    }
+
+    public function accreditation()
+    {
+        $startYear = 2021;
+        // $endYear = date('Y') + 3;
+        $endYear = date('Y');
+        $years = range($startYear, $endYear);
+
+        $data['years'] = $years;
+
+        $data['international'] = $this->RankingModel
+            ->getRankings('international', $years);
+
+        $data['national'] = $this->RankingModel
+            ->getRankings('national', $years);
+
+        return view('rankings_view', $data);
     }
 }
