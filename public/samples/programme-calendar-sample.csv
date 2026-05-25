@@ -1,0 +1,3 @@
+calendar_type,academic_year,programme_title,faculties,programme_date,venue,registration_link,fee_type,residential_fee,non_residential_fee,simple_fee,gst_applicable
+e-MDP Calendar,2025-2026,AI Programme,"1,2",2026-06-10,IIMK,https://example.com,simple,,,50000,1
+Open FDP Calendar,2025-2026,Leadership Programme,"2,3",2026-07-15,IIMK,https://example.com,residential,75000,50000,,1

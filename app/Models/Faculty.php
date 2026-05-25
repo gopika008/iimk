@@ -11,7 +11,7 @@ class Faculty extends Model
         'name',
         'designation',
         'office',
-         'highest_education',
+        'highest_education',
         'area',
         'phone',
         'email',
@@ -29,7 +29,7 @@ class Faculty extends Model
         'name' => 'array',
         'designation' => 'array',
         'office' => 'array',
-            'highest_education' => 'array',
+        'highest_education' => 'array',
         'area' => 'array',
         'qualification' => 'array',
         'experience' => 'array',
@@ -48,5 +48,15 @@ class Faculty extends Model
     public function contents()
     {
         return $this->hasMany(FacultyContent::class);
+    }
+    public function programmeCalendars()
+    {
+        return $this->belongsToMany(ProgrammeCalendar::class, 'faculty_programme_calendar');
+    }
+
+    // optional: access localized name
+    public function getDisplayNameAttribute()
+    {
+        return $this->name['en'] ?? $this->name['hi'] ?? 'N/A';
     }
 }
