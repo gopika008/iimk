@@ -5,8 +5,7 @@ namespace App\Filament\Resources\ProgrammeCalendars;
 use App\Filament\Resources\ProgrammeCalendars\Pages\CreateProgrammeCalendar;
 use App\Filament\Resources\ProgrammeCalendars\Pages\EditProgrammeCalendar;
 use App\Filament\Resources\ProgrammeCalendars\Pages\ListProgrammeCalendars;
-use App\Filament\Resources\ProgrammeCalendars\Schemas\ProgrammeCalendarForm;
-use App\Filament\Resources\ProgrammeCalendars\Tables\ProgrammeCalendarsTable;
+
 use App\Models\ProgrammeCalendar;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -21,8 +20,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\BadgeColumn;
-use Filament\Tables\Columns\IconColumn;
 
 use Filament\Actions\Action;
 use Maatwebsite\Excel\Facades\Excel;
