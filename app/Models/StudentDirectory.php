@@ -8,7 +8,7 @@ class StudentDirectory extends Model
 {
     protected $table = 'student_directories';
 
-    protected $primaryKey = 'intAutoNo';
+    //protected $primaryKey = 'intAutoNo';
 
     public $incrementing = true;
 

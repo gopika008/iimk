@@ -1,0 +1,4 @@
+name,roll_no,email,last_qualification,programme,status,current_organization,designation,photo
+Arun Kumar,PGP001,arun@test.com,B.Tech,PGP,,,,student-directory/arun.jpg
+Meera S,DPM001,meera@test.com,MBA,DPM,pursuing,,,student-directory/meera.jpg
+Rahul N,BL001,rahul@test.com,B.Com,PGP-BL,,Infosys,Manager,student-directory/rahul.jpg

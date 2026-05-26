@@ -49,11 +49,11 @@ class FacultyResource extends Resource
     {
         return $schema->schema([
 
-            Select::make('user_id')
-                ->relationship('user', 'name')
-                ->searchable()
-                ->label('Faculty Login')
-                ->hidden(fn() => auth()->user()->hasRole('faculty')),
+            // Select::make('user_id')
+            //     ->relationship('user', 'name')
+            //     ->searchable()
+            //     ->label('Faculty Login')
+            //     ->hidden(fn() => auth()->user()->hasRole('faculty')), // hasRole Error ->  ->hidden(fn() => auth()->user()?->hasRole('faculty')),
 
             Tabs::make('Languages')
     ->tabs([
@@ -260,7 +260,7 @@ class FacultyResource extends Resource
                 ->url(),
 
             FileUpload::make('photo')
-                ->disk('public')
+                ->disk('local')
                 ->directory('faculty'),
 
         ]);
@@ -277,7 +277,7 @@ class FacultyResource extends Resource
 
                 ImageColumn::make('photo')
                     ->label('Photo')
-                    ->disk('public')
+                    ->disk('local')
                     ->circular(),
 
                 TextColumn::make('name')

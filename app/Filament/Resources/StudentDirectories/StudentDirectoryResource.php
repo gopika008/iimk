@@ -25,6 +25,9 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Toggle;
 use App\Filament\Resources\StudentDirectories\Schemas\StudentDirectoryForm;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\ToggleButtons;
+use Filament\Tables\Columns\ImageColumn;
 
 use Filament\Notifications\Notification;
 
@@ -41,7 +44,75 @@ class StudentDirectoryResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-         return StudentDirectoryForm::configure($schema);
+    return $schema
+        ->schema([
+
+            TextInput::make('name')
+                ->required()
+                ->columnSpan(1),
+
+            TextInput::make('roll_no')
+                ->required()
+                ->columnSpan(1),
+
+            TextInput::make('email')
+                ->email()
+                ->required()
+                ->columnSpan(1),
+
+            TextInput::make('last_qualification')
+                ->columnSpan(1),
+
+            Select::make('programme')
+                ->options([
+                    'DPM' => 'DPM',
+                    'DPM-PT' => 'DPM-PT',
+                    'PGP' => 'Post Graduate Programme (PGP)',
+                    'PGP-Finance' => 'Post Graduate Programme in Finance (PGP-Finance )',
+                    'PGP-LSM' => 'Post Graduate Programme in Liberal Studies & Management (PGP-LSM )',
+                    'PGP-BL' => 'Post Graduate Programme in Business Leadership (PGP-BL)',
+                    'BMS' => 'Bachelor of Management Studies (BMS)',
+
+
+
+                    ])
+                ->live()
+                ->required()
+                ->columnSpan(1),
+
+            ToggleButtons::make('status')
+                ->label('PhD Status')
+                ->options([
+                    'pursuing' => 'Pursuing',
+                    'graduated' => 'Graduated',
+                ])
+                ->inline()
+                ->visible(fn ($get) =>
+                    $get('programme') === 'DPM'
+                )
+                ->columnSpan(1),
+
+            TextInput::make('current_organization')
+                ->visible(fn ($get) =>
+                    in_array($get('programme'), ['DPM-PT', 'PGP-BL', 'bl'])
+                )
+                ->columnSpan(1),
+
+            TextInput::make('designation')
+                ->visible(fn ($get) =>
+                    in_array($get('programme'), ['DPM-PT', 'PGP-BL', 'bl'])
+                )
+                ->columnSpan(1),
+
+            FileUpload::make('photo')
+                ->image()
+                ->disk('public')
+                ->directory('student-directory')
+                ->columnSpanFull(),
+
+        ])
+        ->columns(2);
+        // return StudentDirectoryForm::configure($schema);
         // return $schema
         //     ->schema([
 
@@ -511,46 +582,28 @@ class StudentDirectoryResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
+            return $table
+        ->columns([
 
-                TextColumn::make('intAutoNo')
-                    ->label('ID')
-                    ->sortable()
-                    ->searchable(),
+             ImageColumn::make('photo')
+                ->disk('public')
+                ->circular(),
 
-                TextColumn::make('intRollNo')
-                    ->label('Roll No')
-                    ->searchable(),
+            TextColumn::make('name')
+                ->searchable(),
 
-                TextColumn::make('chrStudFirstName')
-                    ->label('First Name')
-                    ->searchable(),
+            TextColumn::make('roll_no')
+                ->searchable(),
 
-                TextColumn::make('chrStudLastName')
-                    ->label('Last Name')
-                    ->searchable(),
+            TextColumn::make('programme'),
 
-                TextColumn::make('chrEmail')
-                    ->label('Email')
-                    ->searchable(),
+            TextColumn::make('status'),
 
-                TextColumn::make('chrMobile')
-                    ->label('Mobile')
-                    ->searchable(),
+            TextColumn::make('current_organization'),
 
-                TextColumn::make('chrSex')
-                    ->label('Gender'),
+            TextColumn::make('designation'),
 
-                TextColumn::make('dtmDOB')
-                    ->label('DOB')
-                    ->date(),
-
-                TextColumn::make('created_at')
-                    ->label('Imported At')
-                    ->dateTime(),
-
-            ])
+        ])
 
             // ->actions([
 
@@ -563,6 +616,15 @@ class StudentDirectoryResource extends Resource
             // ])
 
             ->headerActions([
+                 Action::make('download_sample')
+
+                ->label('Download Sample CSV')
+
+                ->icon('heroicon-o-arrow-down-tray')
+
+                ->url(asset('samples/student-directory.csv'))
+
+                ->openUrlInNewTab(),
 
                 Action::make('import_csv')
                     ->label('Import CSV')

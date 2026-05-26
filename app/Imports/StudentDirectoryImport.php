@@ -21,63 +21,78 @@ class StudentDirectoryImport implements
         return 50;
     }
 
-    public function model(array $row)
-    {
-        $data = [];
+  public function model(array $row)
+{
+    $data = [];
 
-        foreach ($row as $key => $value) {
+    foreach ($row as $key => $value) {
 
-            $key = trim($key);
+        // clean key
+        $key = trim($key);
 
-            // skip auto columns
-            if (in_array(strtolower($key), [
-                'id',
-                'intautono',
-                'created_at',
-                'updated_at'
-            ])) {
-                continue;
-            }
-
-            // null handling
-            if ($value === null || $value === '') {
-
-                if (
-                    str_starts_with(strtolower($key), 'int') ||
-                    str_starts_with(strtolower($key), 'num') ||
-                    strtolower($key) == 'sibling_id'
-                ) {
-
-                    $value = 0;
-
-                } elseif (
-                    str_starts_with(strtolower($key), 'dtm') ||
-                    str_contains(strtolower($key), 'date')
-                ) {
-
-                    $value = now()->format('Y-m-d H:i:s');
-
-                } else {
-
-                    $value = '';
-                }
-            }
-
-            // invalid mysql dates
-            if (
-                $value == '0000-00-00' ||
-                $value == '0000-00-00 00:00:00'
-            ) {
-
-                $value = now()->format('Y-m-d H:i:s');
-            }
-
-            $data[$key] = $value;
+        // skip auto/system columns
+        if (in_array(strtolower($key), [
+            'id',
+            'created_at',
+            'updated_at',
+        ])) {
+            continue;
         }
 
-        $data['created_at'] = now();
-        $data['updated_at'] = now();
+        // convert empty values
+        if ($value === null || $value === '') {
 
-        return new StudentDirectory($data);
+            switch ($key) {
+
+                case 'status':
+                    $value = null;
+                    break;
+
+                case 'current_organization':
+                case 'designation':
+                case 'photo':
+                case 'last_qualification':
+                    $value = '';
+                    break;
+
+                default:
+                    $value = '';
+                    break;
+            }
+        }
+
+        // programme-based cleanup
+        if (
+            $key === 'status' &&
+            ($row['programme'] ?? '') !== 'DPM'
+        ) {
+            $value = null;
+        }
+
+        if (
+            in_array($key, [
+                'current_organization',
+                'designation'
+            ]) &&
+            !in_array(
+                ($row['programme'] ?? ''),
+                ['DPM-PT', 'PGP-BL']
+            )
+        ) {
+            $value = '';
+        }
+
+        // clean spaces
+        if (is_string($value)) {
+            $value = trim($value);
+        }
+
+        $data[$key] = $value;
     }
+
+    $data['created_at'] = now();
+    $data['updated_at'] = now();
+
+    return new StudentDirectory($data);
+}
 }

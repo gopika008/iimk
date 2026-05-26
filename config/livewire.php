@@ -142,8 +142,8 @@ return [
     //     'cleanup' => true, // Should cleanup temporary uploads older than 24 hrs...
     // ],
     'temporary_file_upload' => [
-        'disk' => 'public',
-        'rules' => null,
+        'disk' => 'local',
+        'rules' => ['required', 'file', 'max:20480'],
         'directory' => 'livewire-tmp',
         'middleware' => null,
         'preview_mimes' => [
@@ -153,7 +153,6 @@ return [
         ],
         'max_upload_time' => 5,
     ],
-
     /*
     |---------------------------------------------------------------------------
     | Render On Redirect
