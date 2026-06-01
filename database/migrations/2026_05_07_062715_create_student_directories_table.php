@@ -24,6 +24,13 @@ return new class extends Migration
             $table->string('email')->unique();
 
             $table->string('programme');
+            $table->foreignId('programme_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('batch_id')
+                ->constrained()
+                ->cascadeOnDelete();
 
             // For PhD
             $table->enum('status', ['pursuing', 'graduated'])->nullable();

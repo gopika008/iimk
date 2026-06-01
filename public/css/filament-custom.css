@@ -1,0 +1,359 @@
+/* ======================================================
+   GLOBAL
+====================================================== */
+
+body {
+    background: #f5f5f9 !important;
+    font-family: "Public Sans", sans-serif;
+}
+
+/* ======================================================
+   TOPBAR
+====================================================== */
+
+.fi-topbar {
+    background: #ffffff !important;
+    border-bottom: 1px solid #ebeef0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+
+/* ======================================================
+   PAGE WIDTH
+====================================================== */
+
+.fi-main {
+    max-width: 100% !important;
+}
+
+.fi-main-ctn {
+    max-width: 100% !important;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+/* ======================================================
+   CARDS / SECTIONS
+====================================================== */
+
+.fi-section,
+.fi-ta,
+.fi-in-card {
+    border-radius: 16px !important;
+    border: none !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    background: white !important;
+}
+
+/* ======================================================
+   INPUTS
+====================================================== */
+
+.fi-input-wrp {
+    border-radius: 12px !important;
+    border: 1px solid #d9dee3 !important;
+    min-height: 46px;
+    background: white !important;
+    transition: all .2s ease;
+}
+
+.fi-input-wrp:focus-within {
+    border-color: #0b1f5f !important;
+    box-shadow: 0 0 0 .15rem rgba(11,31,95,.15);
+}
+
+/* ======================================================
+   BUTTONS
+====================================================== */
+
+.fi-btn {
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+}
+
+/* Dark blue primary button */
+
+.fi-btn[class*="fi-color-primary"] {
+    background: #0b1f5f !important;
+    border-color: #0b1f5f !important;
+    color: #ffffff !important;
+}
+
+/* Button text */
+
+.fi-btn[class*="fi-color-primary"] span {
+    color: #ffffff !important;
+}
+
+/* Button icons */
+
+.fi-btn[class*="fi-color-primary"] svg {
+    color: #ffffff !important;
+    fill: currentColor !important;
+}
+
+/* Hover */
+
+.fi-btn[class*="fi-color-primary"]:hover {
+    background: #081747 !important;
+    border-color: #081747 !important;
+}
+
+/* ======================================================
+   TABLES
+====================================================== */
+
+.fi-ta-table {
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.fi-ta-header-cell {
+    background: #f9fafc;
+    font-weight: 700;
+}
+
+/* ======================================================
+   BADGES
+====================================================== */
+
+.fi-badge {
+    border-radius: 30px !important;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+/* ======================================================
+   MODALS
+====================================================== */
+
+.fi-modal-window {
+    border-radius: 18px !important;
+}
+
+/* ======================================================
+   DROPDOWNS
+====================================================== */
+
+.fi-dropdown-panel {
+    border-radius: 14px !important;
+    overflow: hidden;
+}
+
+/* ======================================================
+   LOGIN PAGE
+====================================================== */
+
+.fi-simple-layout {
+    background: linear-gradient(
+        135deg,
+        #0b1f5f,
+        #162d7d
+    ) !important;
+}
+
+.fi-simple-main {
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,.1);
+}
+
+/* ======================================================
+   FULL DARK BLUE SIDEBAR
+====================================================== */
+
+.fi-sidebar {
+    background: #0b1f5f !important;
+    border-right: none !important;
+}
+
+/* ======================================================
+   SIDEBAR MENU LINKS
+====================================================== */
+
+.fi-sidebar-item-btn {
+    border-radius: 10px !important;
+    margin: 4px 10px;
+    transition: all .2s ease;
+    background: transparent !important;
+}
+
+/* Normal menu text */
+
+.fi-sidebar-item-label {
+    color: #bcbcbc !important;
+    font-weight: 500 !important;
+}
+
+/* Normal menu icons */
+
+.fi-sidebar-item-btn svg {
+    color: #bcbcbc !important;
+    fill: currentColor !important;
+}
+
+/* Hover */
+
+.fi-sidebar-item-btn:hover {
+    background: rgba(255,255,255,.08) !important;
+}
+
+
+/* ======================================================
+   ACTIVE MENU (WORKING FILAMENT FIX)
+====================================================== */
+
+.fi-sidebar-item-active .fi-sidebar-item-btn {
+    background: rgba(255,255,255,0.14) !important;
+    border-left: 4px solid #ffffff !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18) !important;
+}
+
+/* Active text */
+.fi-sidebar-item-active .fi-sidebar-item-label {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+/* Active icon */
+.fi-sidebar-item-active svg {
+    color: #ffffff !important;
+    fill: currentColor !important;
+}
+.fi-sidebar-item[class*="active"] .fi-sidebar-item-btn {
+    background: rgba(53, 56, 87, 0.962) !important;
+    border-left: 4px solid #ffffff !important;
+
+}
+/* ======================================================
+   GROUP LABELS
+====================================================== */
+
+.fi-sidebar-group-label {
+    color: rgba(255,255,255,.55) !important;
+}
+
+/* ======================================================
+   GROUP TOGGLE ICON
+====================================================== */
+
+.fi-sidebar-group-button svg {
+    color: rgba(255,255,255,.7) !important;
+}
+
+/* ======================================================
+   SCROLLBAR
+====================================================== */
+
+
+/* ======================================================
+   DARK PREMIUM SCROLLBAR (MATCHES YOUR SIDEBAR THEME)
+====================================================== */
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+/* track */
+::-webkit-scrollbar-track {
+    background: #0b1f5f; /* matches sidebar */
+}
+
+/* thumb */
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    border: 2px solid #0b1f5f;
+}
+
+/* hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* active */
+::-webkit-scrollbar-thumb:active {
+    background: rgba(255, 255, 255, 0.55);
+}
+
+/* corner */
+::-webkit-scrollbar-corner {
+    background: #0b1f5f;
+}
+
+/* ======================================================
+   TOPBAR (MATCH SIDEBAR THEME)
+====================================================== */
+
+.fi-topbar {
+    background: #0b1f5f !important;
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+/* Topbar text & icons */
+.fi-topbar * {
+    color: #ffffff !important;
+    fill: currentColor !important;
+}
+
+/* Buttons inside topbar (if any) */
+.fi-topbar .fi-btn {
+    background: rgba(255,255,255,0.08) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    color: #ffffff !important;
+}
+
+/* Hover effect */
+.fi-topbar .fi-btn:hover {
+    background: rgba(255,255,255,0.15) !important;
+}
+
+
+/* SIDEBAR – add right divider */
+.fi-sidebar {
+    background: #0b1f5f !important;
+    border-right: 2px solid rgba(255,255,255,0.08) !important;
+}
+
+/* TOPBAR – subtle bottom separation */
+.fi-topbar {
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* Sidebar divider accent */
+.fi-sidebar {
+    border-right: 2px solid rgba(11, 31, 95, 0.25) !important;
+}
+
+/* Topbar divider accent */
+.fi-topbar {
+    border-bottom: 2px solid rgba(11, 31, 95, 0.15) !important;
+}
+
+
+/* ==========================================
+   TOPBAR ↔ SIDEBAR SEPARATION
+========================================== */
+
+/* Sidebar */
+.fi-sidebar {
+    margin-top: 6px !important;
+    border-top-right-radius: 16px !important;
+}
+
+/* Visible separator */
+.fi-sidebar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -1px;
+    width: 2px;
+    height: 100%;
+    background: rgba(255,255,255,0.15);
+    z-index: 999;
+}
+
+
+

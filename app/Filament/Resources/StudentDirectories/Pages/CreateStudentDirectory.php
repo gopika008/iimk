@@ -8,4 +8,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateStudentDirectory extends CreateRecord
 {
     protected static string $resource = StudentDirectoryResource::class;
+    public function getMaxContentWidth(): ?string
+{
+    return 'full';
+}
 }

@@ -3,7 +3,6 @@
 namespace App\Imports;
 
 use App\Models\StudentDirectory;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
@@ -13,86 +12,66 @@ class StudentDirectoryImport implements
     ToModel,
     WithHeadingRow,
     WithChunkReading,
-    SkipsEmptyRows,
-    ShouldQueue
+    SkipsEmptyRows
 {
     public function chunkSize(): int
     {
         return 50;
     }
 
-  public function model(array $row)
-{
-    $data = [];
+    public function model(array $row)
+    {
+        $data = [];
 
-    foreach ($row as $key => $value) {
+        foreach ($row as $key => $value) {
 
-        // clean key
-        $key = trim($key);
+            // clean key
+            $key = trim($key);
 
-        // skip auto/system columns
-        if (in_array(strtolower($key), [
-            'id',
-            'created_at',
-            'updated_at',
-        ])) {
-            continue;
-        }
-
-        // convert empty values
-        if ($value === null || $value === '') {
-
-            switch ($key) {
-
-                case 'status':
-                    $value = null;
-                    break;
-
-                case 'current_organization':
-                case 'designation':
-                case 'photo':
-                case 'last_qualification':
-                    $value = '';
-                    break;
-
-                default:
-                    $value = '';
-                    break;
+            // skip system fields
+            if (in_array(strtolower($key), [
+                'id',
+                'created_at',
+                'updated_at',
+            ])) {
+                continue;
             }
+
+            // empty value handling
+            if ($value === null || $value === '') {
+
+                switch ($key) {
+
+                    case 'programme_id':
+                    case 'batch_id':
+                        $value = null;
+                        break;
+
+                    case 'photo':
+                    case 'designation':
+                    case 'institution':
+                    case 'current_organization':
+                    case 'last_qualification':
+                        $value = '';
+                        break;
+
+                    default:
+                        $value = '';
+                        break;
+                }
+            }
+
+            // trim strings
+            if (is_string($value)) {
+                $value = trim($value);
+            }
+
+            $data[$key] = $value;
         }
 
-        // programme-based cleanup
-        if (
-            $key === 'status' &&
-            ($row['programme'] ?? '') !== 'DPM'
-        ) {
-            $value = null;
-        }
+        $data['created_at'] = now();
+        $data['updated_at'] = now();
 
-        if (
-            in_array($key, [
-                'current_organization',
-                'designation'
-            ]) &&
-            !in_array(
-                ($row['programme'] ?? ''),
-                ['DPM-PT', 'PGP-BL']
-            )
-        ) {
-            $value = '';
-        }
-
-        // clean spaces
-        if (is_string($value)) {
-            $value = trim($value);
-        }
-
-        $data[$key] = $value;
+        return new StudentDirectory($data);
     }
-
-    $data['created_at'] = now();
-    $data['updated_at'] = now();
-
-    return new StudentDirectory($data);
-}
 }

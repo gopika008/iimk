@@ -78,3 +78,51 @@ Route::view('/international-relations/student-exchange/partner-institutions', 'p
 Route::view('/international-relations/student-exchange/events', 'pages.international-relations.student-exchange.events')
     ->name('international-relations.student-exchange.events');
 //IR MENU END
+
+//Academic Programmes
+Route::view('/academic-programmes/doctoral-programmes', 'pages.academic-programmes.doctoral-programmes.index')
+    ->name('academic-programmes.doctoral-programmes.index');
+
+Route::view('/academic-programmes/doctoral-programmes/areas-of-specialization', 'pages.academic-programmes.doctoral-programmes.areas-of-specialization')
+    ->name('academic-programmes.doctoral-programmes.areas-of-specialization');
+
+Route::view('/academic-programmes/doctoral-programmes/vision-and-goals', 'pages.academic-programmes.doctoral-programmes.vision-and-goals')
+    ->name('academic-programmes.doctoral-programmes.vision-and-goals');
+
+Route::view('/academic-programmes/doctoral-programmes/structure-and-coursework', 'pages.academic-programmes.doctoral-programmes.structure-and-coursework')
+    ->name('academic-programmes.doctoral-programmes.structure-and-coursework');
+
+Route::view('/academic-programmes/doctoral-programmes/fellowship-and-fee-structure', 'pages.academic-programmes.doctoral-programmes.fellowship-and-fee-structure')
+    ->name('academic-programmes.doctoral-programmes.fellowship-and-fee-structure');
+
+Route::view('/academic-programmes/doctoral-programmes/admission', 'pages.academic-programmes.doctoral-programmes.admission')
+    ->name('academic-programmes.doctoral-programmes.admission');
+
+Route::view('/academic-programmes/doctoral-programmes/student-thesis-dpm', 'pages.academic-programmes.doctoral-programmes.student-thesis-dpm')
+    ->name('academic-programmes.doctoral-programmes.student-thesis-dpm');
+
+Route::view('/academic-programmes/doctoral-programmes/testimonials', 'pages.academic-programmes.doctoral-programmes.testimonials')
+    ->name('academic-programmes.doctoral-programmes.testimonials');
+
+Route::view('/academic-programmes/doctoral-programmes/student-directory/dpm', 'pages.academic-programmes.doctoral-programmes.student-directory-dpm')
+    ->name('academic-programmes.doctoral-programmes.student-directory-dpm');
+
+Route::view('/academic-programmes/doctoral-programmes/student-directory/dpm-practice-track', 'pages.academic-programmes.doctoral-programmes.student-directory-practice')
+    ->name('academic-programmes.doctoral-programmes.student-directory-practice');
+
+Route::view('/academic-programmes/doctoral-programmes/faq', 'pages.academic-programmes.doctoral-programmes.faq')
+    ->name('academic-programmes.doctoral-programmes.faq');
+
+Route::view('/academic-programmes/doctoral-programmes/contact-us', 'pages.academic-programmes.doctoral-programmes.contact-us')
+    ->name('academic-programmes.doctoral-programmes.contact-us');
+
+//dpm over
+
+//pgp start
+Route::view('/academic-programmes/pgp', 'pages.academic-programmes.pgp.index')
+    ->name('academic-programmes.pgp.index');
+Route::view('/academic-programmes/pgp/courses', 'pages.academic-programmes.pgp.courses')
+    ->name('academic-programmes.pgp.courses');
+//pgp end
+
+//Academic Programmes

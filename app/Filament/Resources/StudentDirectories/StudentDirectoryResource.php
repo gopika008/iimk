@@ -35,83 +35,88 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\StudentDirectoryImport;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Illuminate\Database\Eloquent\Builder;
 
 class StudentDirectoryResource extends Resource
 {
     protected static ?string $model = StudentDirectory::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
     public static function form(Schema $schema): Schema
     {
-    return $schema
-        ->schema([
+        return $schema
+            ->schema([
 
-            TextInput::make('name')
-                ->required()
-                ->columnSpan(1),
+                Section::make('Student Information')
+                    ->description('Basic details of student')
+                    ->schema([
 
-            TextInput::make('roll_no')
-                ->required()
-                ->columnSpan(1),
+                        Select::make('programme_id')
+                            ->label('Programme')
+                            ->options(\App\Models\Programme::pluck('name', 'id'))
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->required(),
 
-            TextInput::make('email')
-                ->email()
-                ->required()
-                ->columnSpan(1),
+                        Select::make('batch_id')
+                            ->label('Batch')
+                            ->options(
+                                fn($get) =>
+                                \App\Models\Batch::where(
+                                    'programme_id',
+                                    $get('programme_id')
+                                )->pluck('name', 'id')
+                            )
+                            ->searchable()
+                            ->required(),
 
-            TextInput::make('last_qualification')
-                ->columnSpan(1),
+                        TextInput::make('name')
+                            ->required(),
 
-            Select::make('programme')
-                ->options([
-                    'DPM' => 'DPM',
-                    'DPM-PT' => 'DPM-PT',
-                    'PGP' => 'Post Graduate Programme (PGP)',
-                    'PGP-Finance' => 'Post Graduate Programme in Finance (PGP-Finance )',
-                    'PGP-LSM' => 'Post Graduate Programme in Liberal Studies & Management (PGP-LSM )',
-                    'PGP-BL' => 'Post Graduate Programme in Business Leadership (PGP-BL)',
-                    'BMS' => 'Bachelor of Management Studies (BMS)',
-
-
+                        TextInput::make('email')
+                            ->email()
+                            ->unique(ignoreRecord: true)
+                            ->validationMessages([
+                                'unique' => 'This email already exists.',
+                            ])
+                            ->required(),
 
                     ])
-                ->live()
-                ->required()
-                ->columnSpan(1),
+                    ->columns(2),
 
-            ToggleButtons::make('status')
-                ->label('PhD Status')
-                ->options([
-                    'pursuing' => 'Pursuing',
-                    'graduated' => 'Graduated',
-                ])
-                ->inline()
-                ->visible(fn ($get) =>
-                    $get('programme') === 'DPM'
-                )
-                ->columnSpan(1),
+                Section::make('Academic & Professional Details')
+                    ->schema([
 
-            TextInput::make('current_organization')
-                ->visible(fn ($get) =>
-                    in_array($get('programme'), ['DPM-PT', 'PGP-BL', 'bl'])
-                )
-                ->columnSpan(1),
+                        TextInput::make('last_qualification')
+                            ->label('Last Qualification'),
 
-            TextInput::make('designation')
-                ->visible(fn ($get) =>
-                    in_array($get('programme'), ['DPM-PT', 'PGP-BL', 'bl'])
-                )
-                ->columnSpan(1),
+                        TextInput::make('institution')
+                            ->label('College / Institution'),
 
-            FileUpload::make('photo')
-                ->image()
-                ->disk('public')
-                ->directory('student-directory')
-                ->columnSpanFull(),
+                        TextInput::make('designation'),
 
-        ])
-        ->columns(2);
+                        TextInput::make('current_organization')
+                            ->label('Organization'),
+
+                    ])
+                    ->columns(2),
+
+                Section::make('Profile Photo')
+                    ->schema([
+
+                        FileUpload::make('photo')
+                            ->image()
+                            ->disk('public')
+                            ->directory('student-directory')
+                            ->imagePreviewHeight('180')
+                            ->panelLayout('integrated')
+                            ->columnSpanFull(),
+
+                    ]),
+
+            ])
+            ->columns(1);
         // return StudentDirectoryForm::configure($schema);
         // return $schema
         //     ->schema([
@@ -582,29 +587,42 @@ class StudentDirectoryResource extends Resource
 
     public static function table(Table $table): Table
     {
-            return $table
-        ->columns([
+        return $table
+            ->columns([
 
-             ImageColumn::make('photo')
-                ->disk('public')
-                ->circular(),
+                ImageColumn::make('photo')
+                    ->disk('public')
+                    ->circular(),
 
-            TextColumn::make('name')
-                ->searchable(),
+                TextColumn::make('roll_no')
+                    ->searchable(),
 
-            TextColumn::make('roll_no')
-                ->searchable(),
+                TextColumn::make('name')
+                    ->searchable(),
+                TextColumn::make('programme.name')
+                    ->label('Programme')
+                    ->searchable(),
 
-            TextColumn::make('programme'),
+                // TextColumn::make('programme.name')
+                //     ->label('Programme')
+                //     ->formatStateUsing(
+                //         fn($record) =>
+                //         $record->programme?->name
+                //     )
+                //     ->searchable(),
 
-            TextColumn::make('status'),
+                TextColumn::make('batch.name')
+                    ->label('Batch')
+                    ->searchable(),
 
-            TextColumn::make('current_organization'),
+                TextColumn::make('email'),
 
-            TextColumn::make('designation'),
+                TextColumn::make('designation'),
 
-        ])
+                TextColumn::make('current_organization')
+                    ->label('Organization'),
 
+            ])
             // ->actions([
 
             //     \Filament\Actions\ViewAction::make(),
@@ -616,15 +634,15 @@ class StudentDirectoryResource extends Resource
             // ])
 
             ->headerActions([
-                 Action::make('download_sample')
+                Action::make('download_sample')
 
-                ->label('Download Sample CSV')
+                    ->label('Download Sample CSV')
 
-                ->icon('heroicon-o-arrow-down-tray')
+                    ->icon('heroicon-o-arrow-down-tray')
 
-                ->url(asset('samples/student-directory.csv'))
+                    ->url(asset('samples/student-directory.csv'))
 
-                ->openUrlInNewTab(),
+                    ->openUrlInNewTab(),
 
                 Action::make('import_csv')
                     ->label('Import CSV')
@@ -673,5 +691,14 @@ class StudentDirectoryResource extends Resource
             'edit' => EditStudentDirectory::route('/{record}/edit'),
 
         ];
+    }
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->with(['programme', 'batch']);
+    }
+    public function getMaxContentWidth(): ?string
+    {
+        return 'full';
     }
 }

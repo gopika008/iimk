@@ -37,7 +37,7 @@ class RankingProgrammeResource extends Resource
 {
     protected static ?string $model = RankingProgramme::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTrophy;
     protected static ?string $navigationLabel = 'Accreditation & Rankings';
     protected static string|UnitEnum|null $navigationGroup = 'The Institute';
     protected static ?string $recordTitleAttribute = 'name';

@@ -27,7 +27,7 @@ use UnitEnum;
 class ProgrammePolicyResource extends Resource
 {
     protected static ?string $model = ProgrammePolicy::class;
-        protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+        protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
 
     protected static ?string $navigationLabel = 'Admission Policies';
     protected static string|UnitEnum|null $navigationGroup = 'Programmes';

@@ -20,52 +20,70 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
-
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Section;
 class TenderResource extends Resource
 {
     protected static ?string $model = Tender::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMegaphone;
 
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {
-            return $schema
+return $schema->schema([
+
+    Section::make('Tender Details')
+        ->description('Create and manage tender information')
         ->schema([
 
             TextInput::make('title')
+                ->label('Tender Title')
                 ->required()
-                ->maxLength(255),
-
-            TextInput::make('tender_no')
-                ->required()
-                ->unique(ignoreRecord: true),
-
-            DateTimePicker::make('closing_date')
-                ->required(),
-
-            DateTimePicker::make('opening_date')
-                ->required(),
-
+                ->maxLength(255)
+                ->columnSpanFull(),
             Select::make('type')
+                ->label('Tender Type')
                 ->options([
                     'normal' => 'Normal',
                     'etender' => 'E-Tender',
                 ])
                 ->required(),
 
+            TextInput::make('tender_no')
+                ->label('Tender Number')
+                ->required()
+                ->unique(ignoreRecord: true),
+
+            DateTimePicker::make('opening_date')
+                ->label('Opening Date')
+                ->required(),
+
+            DateTimePicker::make('closing_date')
+                ->label('Closing Date')
+                ->required(),
+
+
+
             Toggle::make('collect_user_info')
                 ->label('Collect User Information')
                 ->default(false),
 
             FileUpload::make('tender_document')
+                ->label('Tender Document (PDF)')
                 ->directory('tenders')
                 ->acceptedFileTypes(['application/pdf'])
                 ->downloadable()
-                ->openable(),
+                ->openable()
+                ->columnSpanFull(),
 
-        ]);
+        ])
+        ->columns(2)
+        ->columnSpanFull(),
+
+]);
     }
 
     public static function table(Table $table): Table

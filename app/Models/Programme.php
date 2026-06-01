@@ -10,4 +10,13 @@ class Programme extends Model
     {
         return $this->hasMany(ProgrammePolicy::class);
     }
+    public function batches()
+    {
+        return $this->hasMany(Batch::class);
+    }
+
+    public function students()
+    {
+        return $this->hasMany(StudentDirectory::class);
+    }
 }

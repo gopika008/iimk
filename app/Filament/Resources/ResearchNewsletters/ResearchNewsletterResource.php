@@ -17,6 +17,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\TextColumn;
 use UnitEnum;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Section;
 class ResearchNewsletterResource extends Resource
 {
     protected static ?string $model = ResearchNewsletter::class;
@@ -29,18 +32,33 @@ class ResearchNewsletterResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->schema([
-            TextInput::make('title')
-                ->required(),
 
-            TextInput::make('volume'),
-            FileUpload::make('pdf')
-                ->acceptedFileTypes(['application/pdf'])
-                ->disk('public')
-                ->directory('newsletters')
-                ->visibility('public')
-                ->required(),
+            Section::make('Newsletter')
+                ->description('Upload and manage newsletters')
+                ->schema([
 
-            
+                    TextInput::make('title')
+                        ->label('Title')
+                        ->required()
+                        ->columnSpanFull(),
+
+                    TextInput::make('volume')
+                        ->label('Volume')
+                        ->columnSpanFull(),
+
+                    FileUpload::make('pdf')
+                        ->label('Newsletter PDF')
+                        ->acceptedFileTypes(['application/pdf'])
+                        ->disk('public')
+                        ->directory('newsletters')
+                        ->visibility('public')
+                        ->required()
+                        ->columnSpanFull(),
+
+                ])
+                ->columns(1)
+                ->columnSpanFull(),
+
         ]);
     }
 

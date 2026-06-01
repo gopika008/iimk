@@ -29,7 +29,7 @@ class ProgrammeButtonResource extends Resource
 {
     protected static ?string $model = ProgrammeButton::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
 
     protected static string|UnitEnum|null $navigationGroup = 'Programmes';
 

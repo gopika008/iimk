@@ -2,27 +2,18 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Widgets\Widget;
+use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
-class StatsOverview extends Widget
+class StatsOverview extends StatsOverviewWidget
 {
-    protected string $view = 'filament.widgets.stats-overview';
-    //protected int|string|array $columnSpan = 1;
     protected function getStats(): array
     {
         return [
-            Stat::make('Students', '2,451')
-                ->description('Active students')
-                ->color('primary'),
-
-            Stat::make('Faculty', '145')
-                ->description('Faculty members')
-                ->color('success'),
-
-            Stat::make('Programs', '32')
-                ->description('Academic programs')
-                ->color('warning'),
+            Stat::make('Faculty', 58),
+            Stat::make('Students', 1245),
+            Stat::make('Events', 12),
+            Stat::make('Tenders', 14),
         ];
     }
 }

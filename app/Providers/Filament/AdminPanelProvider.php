@@ -18,7 +18,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-     
+
 use Filament\Support\Assets\Css;
 use Filament\View\PanelsRenderHook;
 
@@ -26,7 +26,7 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel//->default()
+        return $panel //->default()
             ->brandName(fn() => view('branding.iim'))
             ->id('admin')
             ->path('admin')
@@ -35,10 +35,17 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Indigo,
                 //'primary' => Color::hex('#163079'),
             ])
-       ->renderHook(
-    PanelsRenderHook::BODY_START,
-    fn () => ''
-)
+            ->renderHook(
+                'panels::head.end',
+                fn(): string =>
+                '<link rel="stylesheet" href="' .
+                    asset('css/filament-custom.css') .
+                    '">'
+            )
+            //        ->renderHook(
+            //     PanelsRenderHook::BODY_START,
+            //     fn () => ''
+            // )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
@@ -61,8 +68,8 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ]);
-            // ->authMiddleware([
-            //     Authenticate::class,
-            // ]);
+        // ->authMiddleware([
+        //     Authenticate::class,
+        // ]);
     }
 }

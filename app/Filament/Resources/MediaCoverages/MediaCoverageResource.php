@@ -26,58 +26,77 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Section;
+
 
 class MediaCoverageResource extends Resource
 {
     protected static ?string $model = MediaCoverage::class;
 
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedNewspaper;
     protected static ?string $navigationLabel = 'Media & Press';
 
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {
-        return $schema
-            ->schema([
+        return $schema->schema([
 
-                TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
+    Section::make('Media Coverage')
+        ->description('Manage press releases and media/news entries')
+        ->schema([
 
-                Textarea::make('description')
-                    ->rows(5)
-                    ->columnSpanFull(),
+            TextInput::make('title')
+                ->label('Title')
+                ->required()
+                ->maxLength(255)
+                ->columnSpanFull(),
 
-                TextInput::make('paper')
-                    ->label('Newspaper / Media Name')
-                    ->placeholder('Malayala Manorama'),
+            Textarea::make('description')
+                ->label('Description')
+                ->rows(5)
+                ->columnSpanFull(),
 
-                TextInput::make('link')
-                    ->url()
-                    ->maxLength(255),
+            TextInput::make('paper')
+                ->label('Newspaper / Media Name')
+                ->placeholder('Malayala Manorama'),
 
-                DatePicker::make('date')
-                    ->required(),
+            TextInput::make('link')
+                ->label('Source Link')
+                ->url()
+                ->maxLength(255),
 
+            DatePicker::make('date')
+                ->label('Published Date')
+                ->required(),
 
+            Select::make('type')
+                ->label('Type')
+                ->options([
+                    'in_media' => 'In Media',
+                    'press_release' => 'Press Release',
+                ])
+                ->required(),
 
-                Select::make('type')
-                    ->options([
-                        'in_media' => 'In Media',
-                        'press_release' => 'Press Release',
-                    ])
-                    ->required(),
-                FileUpload::make('image')
-    ->image()
-    ->directory('media-coverages')
-    ->moveFiles(),
+            FileUpload::make('image')
+                ->label('Image')
+                ->image()
+                ->directory('media-coverages')
+                ->moveFiles()
+                ->columnSpanFull(),
 
-                Toggle::make('status')
-                    ->default(true),
+            Toggle::make('status')
+                ->label('Active Status')
+                ->default(true),
 
-            ]);
+        ])
+        ->columns(2)
+        ->columnSpanFull(),
+
+]);
     }
 
     public static function table(Table $table): Table
