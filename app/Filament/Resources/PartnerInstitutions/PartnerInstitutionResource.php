@@ -24,6 +24,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
 use UnitEnum;
+use Filament\Schemas\Components\Section;
 class PartnerInstitutionResource extends Resource
 {
     protected static ?string $model = PartnerInstitution::class;
@@ -36,7 +37,10 @@ protected static ?string $navigationLabel = 'Partner Institutions';
 
     public static function form(Schema $schema): Schema
     {
-    return $schema
+return $schema->schema([
+    Section::make('Partner Institution Details')
+        ->description('Manage partner institution information')
+        ->icon('heroicon-o-building-office-2')
         ->schema([
 
             Select::make('continent')
@@ -54,10 +58,6 @@ protected static ?string $navigationLabel = 'Partner Institutions';
             TextInput::make('name')
                 ->required(),
 
-            // TextInput::make('country'),
-
-            // TextInput::make('city'),
-
             FileUpload::make('logo')
                 ->image()
                 ->disk('public')
@@ -68,7 +68,8 @@ protected static ?string $navigationLabel = 'Partner Institutions';
                 ->url(),
 
             Textarea::make('description')
-                ->rows(4),
+                ->rows(4)
+                ->columnSpanFull(),
 
             TextInput::make('sort_order')
                 ->numeric()
@@ -77,7 +78,10 @@ protected static ?string $navigationLabel = 'Partner Institutions';
             Toggle::make('is_active')
                 ->default(true),
 
-        ]);
+        ])
+        ->columns(2)
+        ->columnSpanFull(),
+]);
     }
 
     public static function table(Table $table): Table

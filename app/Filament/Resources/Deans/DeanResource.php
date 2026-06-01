@@ -23,6 +23,7 @@ use Filament\Forms\Components\RichEditor;
 use App\Filament\Resources\Deans\Pages\ListDeans;
 use App\Filament\Resources\Deans\Pages\CreateDean;
 use App\Filament\Resources\Deans\Pages\EditDean;
+use Filament\Schemas\Components\Section;
 
 use function Laravel\Prompts\select;
 
@@ -45,7 +46,11 @@ class DeanResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->schema([
+return $schema->schema([
+     Section::make('Dean and Administration Details')
+        ->description('Manage Dean and Administration member information')
+        ->icon('heroicon-o-user-group')
+        ->schema([
 
             TextInput::make('name')
                 ->required(),
@@ -80,13 +85,6 @@ class DeanResource extends Resource
                 ->searchable()
                 ->required(),
 
-            TextInput::make('type')
-                ->default('Deans And Administration')
-                ->readonly(),
-
-            Hidden::make('type_code')
-                ->default('D&A'),
-
             RichEditor::make('description')
                 ->columnSpanFull(),
 
@@ -103,7 +101,17 @@ class DeanResource extends Resource
                 ->url()
                 ->prefix('https://'),
 
-        ]);
+            TextInput::make('type')
+                ->default('Deans And Administration')
+                ->readonly(),
+
+            Hidden::make('type_code')
+                ->default('D&A'),
+
+        ])
+        ->columns(2)
+        ->columnSpanFull(),
+]);
     }
 
     public static function table(Table $table): Table

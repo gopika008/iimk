@@ -24,7 +24,7 @@ use Filament\Forms\Components\RichEditor;
 use App\Filament\Resources\BoardOfGovernors\Pages\ListBoardOfGovernors;
 use App\Filament\Resources\BoardOfGovernors\Pages\CreateBoardOfGovernor;
 use App\Filament\Resources\BoardOfGovernors\Pages\EditBoardOfGovernor;
-
+use Filament\Schemas\Components\Section;
 class BoardOfGovernorResource extends Resource
 {
     protected static ?string $model = Member::class;
@@ -45,19 +45,19 @@ class BoardOfGovernorResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->schema([
+return $schema->schema([
+    Section::make('Board of Governors Details')
+        ->description('Manage Board of Governors member information')
+        ->icon('heroicon-o-user-group')
+        ->schema([
 
             TextInput::make('name')
                 ->required(),
 
             TextInput::make('designation'),
+
             TextInput::make('organisation'),
 
-            TextInput::make('type')
-                ->default('Board of Governors')->readonly(),
-
-            Hidden::make('type_code')
-                ->default('BOG'),
             RichEditor::make('description')
                 ->columnSpanFull(),
 
@@ -68,7 +68,18 @@ class BoardOfGovernorResource extends Resource
             TextInput::make('url')
                 ->url()
                 ->prefix('https://'),
-        ]);
+
+            TextInput::make('type')
+                ->default('Board of Governors')
+                ->readonly(),
+
+            Hidden::make('type_code')
+                ->default('BOG'),
+
+        ])
+        ->columns(2)
+        ->columnSpanFull(),
+]);
     }
 
     public static function table(Table $table): Table

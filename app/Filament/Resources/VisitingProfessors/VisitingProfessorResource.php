@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\RichEditor;
+use Filament\Schemas\Components\Section;
 class VisitingProfessorResource extends Resource
 {
     protected static ?string $model = Member::class;
@@ -45,18 +46,17 @@ class VisitingProfessorResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->schema([
+return $schema->schema([
+    Section::make('Visiting Professor Details')
+        ->description('Manage visiting professor information')
+        ->icon('heroicon-o-academic-cap')
+        ->schema([
 
             TextInput::make('name')
                 ->required(),
 
             TextInput::make('designation'),
 
-            TextInput::make('type')
-                ->default('Visiting Professors')->readonly(),
-
-            Hidden::make('type_code')
-                ->default('visiting_professor'),
             RichEditor::make('description')
                 ->columnSpanFull(),
 
@@ -67,7 +67,18 @@ class VisitingProfessorResource extends Resource
             TextInput::make('url')
                 ->url()
                 ->prefix('https://'),
-        ]);
+
+            TextInput::make('type')
+                ->default('Visiting Professors')
+                ->readonly(),
+
+            Hidden::make('type_code')
+                ->default('visiting_professor'),
+
+        ])
+        ->columns(2)
+        ->columnSpanFull(),
+]);
     }
 
     public static function table(Table $table): Table

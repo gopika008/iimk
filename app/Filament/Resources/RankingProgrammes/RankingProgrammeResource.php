@@ -32,7 +32,7 @@ use Filament\Forms\Components\{
     Select
 };
 use UnitEnum;
-
+use Filament\Schemas\Components\Section;
 class RankingProgrammeResource extends Resource
 {
     protected static ?string $model = RankingProgramme::class;
@@ -44,40 +44,46 @@ class RankingProgrammeResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema
-            ->schema([
+        return $schema->schema([
+            Section::make('Programme Ranking Details')
+                ->description('Manage programme ranking information')
+                ->icon('heroicon-o-trophy')
+                ->schema([
 
-                TextInput::make('programme_name')
-                    ->required()
-                    ->maxLength(255),
+                    TextInput::make('programme_name')
+                        ->required()
+                        ->maxLength(255),
 
-                Select::make('ranking_type')
-                    ->options([
-                        'international' => 'International',
-                        'national' => 'National',
-                    ])
-                    ->required()
-                    ->live()
-                    ->afterStateUpdated(function ($state, callable $set) {
+                    Select::make('ranking_type')
+                        ->options([
+                            'international' => 'International',
+                            'national' => 'National',
+                        ])
+                        ->required()
+                        ->live()
+                        ->afterStateUpdated(function ($state, callable $set) {
+                            if ($state === 'international') {
+                                $set('category_id', 1);
+                            }
 
-                        if ($state === 'international') {
-                            $set('category_id', 1);
-                        }
+                            if ($state === 'national') {
+                                $set('category_id', 2);
+                            }
+                        }),
 
-                        if ($state === 'national') {
-                            $set('category_id', 2);
-                        }
-                    }),
                     Hidden::make('category_id'),
 
-                TextInput::make('sort_order')
-                    ->numeric()
-                    ->default(0),
+                    TextInput::make('sort_order')
+                        ->numeric()
+                        ->default(0),
 
-                Toggle::make('status')
-                    ->default(true),
+                    Toggle::make('status')
+                        ->default(true),
 
-            ]);
+                ])
+                ->columns(2)
+                ->columnSpanFull(),
+        ]);
     }
 
     public static function table(Table $table): Table

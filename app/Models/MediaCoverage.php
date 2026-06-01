@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Spatie\Translatable\HasTranslations;
 class MediaCoverage extends Model
 {
     protected $fillable = [
@@ -15,5 +15,12 @@ class MediaCoverage extends Model
         'image',
         'type',
         'status',
+    ];
+     use HasTranslations;
+
+    public array $translatable = [
+        'title',
+        'description',
+        'paper',
     ];
 }

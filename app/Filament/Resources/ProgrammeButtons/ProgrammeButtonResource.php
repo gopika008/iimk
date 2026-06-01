@@ -24,6 +24,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
 use UnitEnum;
+use Filament\Schemas\Components\Section;
 
 class ProgrammeButtonResource extends Resource
 {
@@ -33,34 +34,42 @@ class ProgrammeButtonResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Programmes';
 
-protected static ?string $navigationLabel = 'Admission Buttons';
+    protected static ?string $navigationLabel = 'Admission Buttons';
 
     public static function form(Schema $schema): Schema
     {
         return $schema->schema([
+            Section::make('Programme Link Details')
+                ->description('Manage programme-related links and resources')
+                ->icon('heroicon-o-link')
+                ->schema([
 
-            Select::make('programme_id')
-                ->relationship('programme', 'name')
-                ->searchable()
-                ->required(),
+                    Select::make('programme_id')
+                        ->relationship('programme', 'name')
+                        ->searchable()
+                        ->required(),
 
-            TextInput::make('label')
-                ->required(),
+                    TextInput::make('label')
+                        ->required(),
 
-            TextInput::make('url')
-                ->url()
-                ->required(),
+                    TextInput::make('url')
+                        ->url()
+                        ->required(),
+                         TextInput::make('sort_order')
+                        ->numeric()
+                        ->default(0),
 
-            Toggle::make('new_tab')
-                ->default(true),
+                    Toggle::make('new_tab')
+                        ->default(true),
 
-            Toggle::make('is_active')
-                ->default(true),
+                    Toggle::make('is_active')
+                        ->default(true),
 
-            TextInput::make('sort_order')
-                ->numeric()
-                ->default(0),
 
+
+                ])
+                ->columns(2)
+                ->columnSpanFull(),
         ]);
     }
 

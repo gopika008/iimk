@@ -23,6 +23,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
 use UnitEnum;
+use Filament\Schemas\Components\Section;
 class EventResource extends Resource
 {
     protected static ?string $model = Event::class;
@@ -34,7 +35,11 @@ protected static ?string $navigationLabel = 'Events';
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->schema([
+ return $schema->schema([
+    Section::make('Event Details')
+        ->description('Manage event information and registration details')
+        ->icon('heroicon-o-calendar-days')
+        ->schema([
 
             TextInput::make('title')
                 ->required()
@@ -70,9 +75,6 @@ protected static ?string $navigationLabel = 'Events';
                 ->downloadable()
                 ->openable(),
 
-            RichEditor::make('description')
-                ->columnSpanFull(),
-
             TextInput::make('registration_url')
                 ->label('Registration URL')
                 ->url()
@@ -81,7 +83,13 @@ protected static ?string $navigationLabel = 'Events';
             Toggle::make('is_active')
                 ->default(true),
 
-        ])->columns(2);
+            RichEditor::make('description')
+                ->columnSpanFull(),
+
+        ])
+        ->columns(2)
+        ->columnSpanFull(),
+]);
     }
 
     public static function table(Table $table): Table

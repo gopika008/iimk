@@ -23,6 +23,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
 use UnitEnum;
+use Filament\Schemas\Components\Section;
 
 class ProgrammePolicyResource extends Resource
 {
@@ -35,6 +36,10 @@ class ProgrammePolicyResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->schema([
+            Section::make('Programme Policy Details')
+                ->description('Manage programme-related policies and documents')
+                ->icon('heroicon-o-clipboard-document-list')
+                ->schema([
 
             Select::make('programme_id')
                 ->relationship('programme', 'name')
@@ -51,14 +56,19 @@ class ProgrammePolicyResource extends Resource
                 ->openable()
                 ->required(),
 
-            Toggle::make('is_active')
-                ->default(true),
+
 
             TextInput::make('sort_order')
                 ->numeric()
                 ->default(0),
+                 Toggle::make('is_active')
+                ->default(true),
 
-        ]);
+        ])
+        ->columns(2)
+        ->columnSpanFull(),
+    ]);
+
     }
 
     public static function table(Table $table): Table
