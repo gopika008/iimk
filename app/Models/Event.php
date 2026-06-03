@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-     protected $fillable = [
+    protected $fillable = [
         'title',
         'type',
         'start_date',
@@ -17,11 +17,18 @@ class Event extends Model
         'description',
         'registration_url',
         'is_active',
+        'programme_id',
+        'gallery',
     ];
 
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
         'is_active' => 'boolean',
+         'gallery' => 'array',
     ];
+    public function programme()
+    {
+        return $this->belongsTo(Programme::class);
+    }
 }

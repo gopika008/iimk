@@ -13,7 +13,13 @@ class StudentDirectory extends Model
     protected $guarded = [];
 
     public $timestamps = true;
-
+    protected $casts = [
+        'name' => 'array',
+        'last_qualification' => 'array',
+        'institution' => 'array',
+        'designation' => 'array',
+        'current_organization' => 'array',
+    ];
     /*
     |--------------------------------------------------------------------------
     | Relationships

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\StudentDirectories;
 use App\Filament\Resources\StudentDirectories\Pages\CreateStudentDirectory;
 use App\Filament\Resources\StudentDirectories\Pages\EditStudentDirectory;
 use App\Filament\Resources\StudentDirectories\Pages\ListStudentDirectories;
+use App\Models\Batch;
 use App\Models\StudentDirectory;
 
 use BackedEnum;
@@ -36,6 +37,9 @@ use App\Imports\StudentDirectoryImport;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
+use Stichoza\GoogleTranslate\GoogleTranslate;
+
+
 
 class StudentDirectoryResource extends Resource
 {
@@ -51,125 +55,187 @@ class StudentDirectoryResource extends Resource
                     ->description('Basic details of student')
                     ->schema([
 
-                        Select::make('programme_id')
-                            ->label('Programme')
-                            ->options(\App\Models\Programme::pluck('name', 'id'))
-                            ->searchable()
-                            ->preload()
-                            ->live()
-                            ->required()
-                            ->afterStateUpdated(fn(callable $set) => $set('batch_id', null))
 
-                            ->suffixAction(
-                                Action::make('generateBatches')
-                                    ->icon('heroicon-m-arrow-path')
-                                    ->label('Generate')
-                                    ->action(function ($get) {
 
-                                        $programmeId = $get('programme_id');
+Select::make('programme_id')
+    ->label('Programme')
+    ->options(\App\Models\Programme::pluck('name', 'id'))
+    ->searchable()
+    ->preload()
+    ->live()
+    ->required()
+    ->afterStateUpdated(fn (callable $set) => $set('batch_id', null))
 
-                                        if (! $programmeId) {
-                                            Notification::make()
-                                                ->title('Please select a programme first')
-                                                ->warning()
-                                                ->send();
+    ->suffixAction(
+        Action::make('generateBatches')
+            ->icon('heroicon-m-arrow-path')
+            ->label('Generate')
+            ->action(function ($get) {
 
-                                            return;
-                                        }
+                $programmeId = $get('programme_id');
 
-                                        $config = [
-                                            12 => ['code' => 'PhD(PT)', 'batch' => 1, 'start' => 2019, 'end' => 2020],
-                                            1  => ['code' => 'DPM', 'batch' => 1, 'start' => 2007, 'end' => 2010],
-                                            2  => ['code' => 'PGP', 'batch' => 6, 'start' => 2002, 'end' => 2004],
-                                            3  => ['code' => 'PGPF', 'batch' => 1, 'start' => 2020, 'end' => 2022],
-                                            4  => ['code' => 'PGPLSM', 'batch' => 1, 'start' => 2020, 'end' => 2022],
-                                            5  => ['code' => 'PGPBL', 'batch' => 1, 'start' => 2019, 'end' => 2021],
-                                            6  => ['code' => 'BMS', 'batch' => 1, 'start' => 2025, 'end' => 2028],
-                                            7  => ['code' => 'EPGP', 'batch' => 1, 'start' => 2008, 'end' => 2010],
-                                            8  => ['code' => 'EPGPKC', 'batch' => 1, 'start' => 2013, 'end' => 2015],
-                                        ];
+                if (! $programmeId) {
+                    Notification::make()
+                        ->title('Please select a programme first')
+                        ->warning()
+                        ->send();
 
-                                        if (! isset($config[$programmeId])) {
-                                            return;
-                                        }
+                    return;
+                }
 
-                                        $p = $config[$programmeId];
+                $config = [
+                    12 => ['code' => 'PhD(PT)', 'batch' => 1, 'start' => 2019, 'end' => 2020],
+                    1  => ['code' => 'DPM', 'batch' => 1, 'start' => 2007, 'end' => 2010],
+                    2  => ['code' => 'PGP', 'batch' => 6, 'start' => 2002, 'end' => 2004],
+                    3  => ['code' => 'PGPF', 'batch' => 1, 'start' => 2020, 'end' => 2022],
+                    4  => ['code' => 'PGPLSM', 'batch' => 1, 'start' => 2020, 'end' => 2022],
+                    5  => ['code' => 'PGPBL', 'batch' => 1, 'start' => 2019, 'end' => 2021],
+                    6  => ['code' => 'BMS', 'batch' => 1, 'start' => 2025, 'end' => 2028],
+                    7  => ['code' => 'EPGP', 'batch' => 1, 'start' => 2008, 'end' => 2010],
+                    8  => ['code' => 'EPGPKC', 'batch' => 1, 'start' => 2013, 'end' => 2015],
+                ];
 
-                                        $duration = $p['end'] - $p['start'];
+                if (! isset($config[$programmeId])) {
+                    return;
+                }
 
-                                        $batchNo = $p['batch'];
-                                        $startYear = $p['start'];
+                $p = $config[$programmeId];
 
-                                        while ($startYear <= now()->year) {
+                $duration = $p['end'] - $p['start'];
 
-                                            \App\Models\Batch::firstOrCreate(
-                                                [
-                                                    'programme_id' => $programmeId,
-                                                    'name' => $p['code'] . ' ' . str_pad($batchNo, 2, '0', STR_PAD_LEFT) . ' ' . ($startYear . '-' . ($startYear + $duration)),
-                                                ],
-                                                [
-                                                    'start_year' => $startYear,
-                                                    'end_year' => $startYear + $duration,
-                                                ]
-                                            );
+                $batchNo = $p['batch'];
+                $startYear = $p['start'];
 
-                                            $batchNo++;
-                                            $startYear++;
-                                        }
+                while ($startYear <= now()->year) {
 
-                                        Notification::make()
-                                            ->title('Batches generated successfully')
-                                            ->success()
-                                            ->send();
-                                    })
-                            ),
+                    \App\Models\Batch::firstOrCreate(
+                        [
+                            'programme_id' => $programmeId,
+                            'name' => $p['code'] . ' ' . str_pad($batchNo, 2, '0', STR_PAD_LEFT).' '. ($startYear . '-' . ($startYear + $duration)),
+                        ],
+                        [
+                            'start_year' => $startYear,
+                            'end_year' => $startYear + $duration,
+                        ]
+                    );
 
-                        Select::make('batch_id')
-                            ->label('Batch')
-                            ->options(
-                                fn($get) =>
-                                \App\Models\Batch::query()
-                                    ->where('programme_id', $get('programme_id'))
-                                    ->orderByDesc('start_year')
-                                    ->get()
-                                    ->mapWithKeys(fn($batch) => [
-                                        $batch->id =>
-                                        "{$batch->name}"
-                                    ])
-                            )
-                            ->searchable()
-                            ->preload()
-                            ->live()
-                            ->required()
-                            ->disabled(fn($get) => blank($get('programme_id'))),
+                    $batchNo++;
+                    $startYear++;
+                }
 
-                        TextInput::make('name')
-                            ->required(),
+                Notification::make()
+                    ->title('Batches generated successfully')
+                    ->success()
+                    ->send();
+            })
+    ),
 
+Select::make('batch_id')
+    ->label('Batch')
+    ->options(fn ($get) =>
+        \App\Models\Batch::query()
+            ->where('programme_id', $get('programme_id'))
+            ->orderByDesc('start_year')
+            ->get()
+            ->mapWithKeys(fn ($batch) => [
+                $batch->id =>
+                    "{$batch->name}"
+            ])
+    )
+    ->searchable()
+    ->preload()
+    ->live()
+    ->required()
+    ->disabled(fn ($get) => blank($get('programme_id'))),
                         TextInput::make('email')
                             ->email()
                             ->unique(ignoreRecord: true)
                             ->validationMessages([
                                 'unique' => 'This email already exists.',
                             ])
-                            ->required(),
+                            ->required()
+                            ->columnSpanFull(),
 
-                    ])
-                    ->columns(2),
+                        Section::make('English Content')
+                            ->schema([
 
-                Section::make('Academic & Professional Details')
-                    ->schema([
+                                TextInput::make('name.en')
+                                    ->label('Name (English)')
+                                    ->required()
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(
+                                        fn($state, callable $set) =>
+                                        filled($state)
+                                            ? $set('name.hi', GoogleTranslate::trans($state, 'hi', 'en'))
+                                            : null
+                                    ),
 
-                        TextInput::make('last_qualification')
-                            ->label('Last Qualification'),
+                                TextInput::make('last_qualification.en')
+                                    ->label('Last Qualification (English)')
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(
+                                        fn($state, callable $set) =>
+                                        filled($state)
+                                            ? $set('last_qualification.hi', GoogleTranslate::trans($state, 'hi', 'en'))
+                                            : null
+                                    ),
 
-                        TextInput::make('institution')
-                            ->label('College / Institution'),
+                                TextInput::make('institution.en')
+                                    ->label('College / Institution (English)')
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(
+                                        fn($state, callable $set) =>
+                                        filled($state)
+                                            ? $set('institution.hi', GoogleTranslate::trans($state, 'hi', 'en'))
+                                            : null
+                                    ),
 
-                        TextInput::make('designation'),
+                                TextInput::make('designation.en')
+                                    ->label('Designation (English)')
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(
+                                        fn($state, callable $set) =>
+                                        filled($state)
+                                            ? $set('designation.hi', GoogleTranslate::trans($state, 'hi', 'en'))
+                                            : null
+                                    ),
 
-                        TextInput::make('current_organization')
-                            ->label('Organization'),
+                                TextInput::make('current_organization.en')
+                                    ->label('Organization (English)')
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(
+                                        fn($state, callable $set) =>
+                                        filled($state)
+                                            ? $set('current_organization.hi', GoogleTranslate::trans($state, 'hi', 'en'))
+                                            : null
+                                    ),
+
+                            ])
+                            ->columns(2)
+                            ->columnSpan(1),
+
+                        Section::make('Hindi Content')
+                            ->schema([
+
+                                TextInput::make('name.hi')
+                                    ->label('Name (Hindi)')
+                                    ->required(),
+
+                                TextInput::make('last_qualification.hi')
+                                    ->label('Last Qualification (Hindi)'),
+
+                                TextInput::make('institution.hi')
+                                    ->label('College / Institution (Hindi)'),
+
+                                TextInput::make('designation.hi')
+                                    ->label('Designation (Hindi)'),
+
+                                TextInput::make('current_organization.hi')
+                                    ->label('Organization (Hindi)'),
+
+                            ])
+                            ->columns(2)
+                            ->columnSpan(1),
 
                     ])
                     ->columns(2),
@@ -695,17 +761,27 @@ class StudentDirectoryResource extends Resource
                     ->label('Organization'),
 
             ])
-            ->actions([
-                \Filament\Actions\ViewAction::make(),
-                \Filament\Actions\EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                \Filament\Actions\BulkActionGroup::make([
-                    \Filament\Actions\DeleteBulkAction::make(),
-                ]),
-            ])
-            ->striped()
+
+        ->actions([
+            \Filament\Actions\ViewAction::make(),
+            \Filament\Actions\EditAction::make(),
+            \Filament\Actions\DeleteAction::make(),
+        ])
+        ->bulkActions([
+            \Filament\Actions\BulkActionGroup::make([
+                \Filament\Actions\DeleteBulkAction::make(),
+            ]),
+        ])
+        ->striped()
+            // ->actions([
+
+            //     \Filament\Actions\ViewAction::make(),
+
+            //     \Filament\Actions\EditAction::make(),
+
+            //     \Filament\Actions\DeleteAction::make(),
+
+            // ])
 
             ->headerActions([
                 Action::make('download_sample')
@@ -776,3 +852,26 @@ class StudentDirectoryResource extends Resource
         return 'full';
     }
 }
+
+
+/*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
