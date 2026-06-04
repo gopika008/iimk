@@ -20,6 +20,7 @@ use UnitEnum;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Section;
+
 class ResearchNewsletterResource extends Resource
 {
     protected static ?string $model = ResearchNewsletter::class;
@@ -52,6 +53,8 @@ class ResearchNewsletterResource extends Resource
                         ->disk('public')
                         ->directory('newsletters')
                         ->visibility('public')
+                        ->openable()
+                        ->downloadable()
                         ->required()
                         ->columnSpanFull(),
 

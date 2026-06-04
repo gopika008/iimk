@@ -23,6 +23,8 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Section;
+use Carbon\Carbon;
+
 class TenderResource extends Resource
 {
     protected static ?string $model = Tender::class;
@@ -33,82 +35,112 @@ class TenderResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-return $schema->schema([
+        return $schema->schema([
 
-    Section::make('Tender Details')
-        ->description('Create and manage tender information')
-        ->schema([
+            Section::make('Tender Details')
+                ->description('Create and manage tender information')
+                ->schema([
 
-            TextInput::make('title')
-                ->label('Tender Title')
-                ->required()
-                ->maxLength(255)
-                ->columnSpanFull(),
-            Select::make('type')
-                ->label('Tender Type')
-                ->options([
-                    'normal' => 'Normal',
-                    'etender' => 'E-Tender',
+                    TextInput::make('title')
+                        ->label('Tender Title')
+                        ->required()
+                        ->maxLength(255)
+                        ->columnSpanFull(),
+                    Select::make('type')
+                        ->label('Tender Type')
+                        ->options([
+                            'normal' => 'Normal',
+                            'etender' => 'E-Tender',
+                        ])
+                        ->required(),
+
+                    TextInput::make('tender_no')
+                        ->label('Tender Number')
+                        ->required()
+                        ->unique(ignoreRecord: true),
+
+                    DateTimePicker::make('opening_date')
+                        ->label('Opening Date')
+                        ->required()
+                        ->live()
+                        ->afterStateUpdated(fn($state, $set) => $set('closing_date', null)),
+
+                    DateTimePicker::make('closing_date')
+                        ->label('Closing Date')
+                        ->required()
+                        ->minDate(fn($get) => $get('opening_date'))
+                        ->afterOrEqual('opening_date'),
+
+
+
+                    Toggle::make('collect_user_info')
+                        ->label('Collect User Information')
+                        ->default(false),
+
+                    FileUpload::make('tender_document')
+                        ->label('Tender Document (PDF)')
+                        ->directory('tenders')
+                        ->acceptedFileTypes(['application/pdf'])
+                        ->downloadable()
+                        ->openable()
+                        ->columnSpanFull(),
+
                 ])
-                ->required(),
-
-            TextInput::make('tender_no')
-                ->label('Tender Number')
-                ->required()
-                ->unique(ignoreRecord: true),
-
-            DateTimePicker::make('opening_date')
-                ->label('Opening Date')
-                ->required(),
-
-            DateTimePicker::make('closing_date')
-                ->label('Closing Date')
-                ->required(),
-
-
-
-            Toggle::make('collect_user_info')
-                ->label('Collect User Information')
-                ->default(false),
-
-            FileUpload::make('tender_document')
-                ->label('Tender Document (PDF)')
-                ->directory('tenders')
-                ->acceptedFileTypes(['application/pdf'])
-                ->downloadable()
-                ->openable()
+                ->columns(2)
                 ->columnSpanFull(),
 
-        ])
-        ->columns(2)
-        ->columnSpanFull(),
-
-]);
+        ]);
     }
 
     public static function table(Table $table): Table
     {
-         return $table
-        ->columns([
+        return $table
+            ->columns([
 
-            TextColumn::make('title')
-                ->searchable(),
+                TextColumn::make('title')
+                    ->searchable(),
 
-            TextColumn::make('tender_no'),
+                TextColumn::make('tender_no'),
 
-            TextColumn::make('type')
-                ->badge(),
+                TextColumn::make('type')
+                    ->badge(),
 
-            TextColumn::make('closing_date')
-                ->dateTime(),
 
-            TextColumn::make('opening_date')
-                ->dateTime(),
+                TextColumn::make('opening_date')
+                    ->label('Opening Date')
+                    ->dateTime('d M Y, h:i A'),
 
-            IconColumn::make('collect_user_info')
-                ->boolean(),
+                TextColumn::make('closing_date')
+                    ->label('Closing Date')
+                    ->dateTime('d M Y, h:i A'),
 
-        ]);
+                TextColumn::make('status')
+                    ->badge()
+                    ->getStateUsing(
+                        fn($record) =>
+                        Carbon::parse($record->closing_date)->greaterThan(now())
+                            ? 'Open'
+                            : 'Closed'
+                    )
+                    ->colors([
+                        'success' => 'Open',
+                        'warning' => 'Closed',
+                    ]),
+
+                IconColumn::make('collect_user_info')
+                    ->boolean(),
+
+            ])->actions([
+                \Filament\Actions\ViewAction::make(),
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
+                ]),
+            ])
+            ->striped();
     }
 
     public static function getRelations(): array

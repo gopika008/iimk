@@ -26,7 +26,7 @@ Route::get('/lang/{locale}', function ($locale) {
 });
 Route::get('rankings', [HomeController::class, 'accreditation'])->name('rankings.index');
 Route::get('/deans', [HomeController::class, 'dean'])->name('about.dean');
-
+Route::get('/bog', [HomeController::class, 'board_of_governors'])->name('about.bogs');
 
 //ABOUT MENU START
 Route::view('/about', 'pages.about.index')->name('about.index');

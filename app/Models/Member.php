@@ -17,5 +17,6 @@ class Member extends Model
         'image',
         'url',
         'icon',
+        'status',
     ];
 }

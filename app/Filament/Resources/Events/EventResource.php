@@ -179,7 +179,9 @@ class EventResource extends Resource
 
                 // ImageColumn::make('banner')
                 //     ->square(),
-
+                TextColumn::make('sl_no')
+                    ->label('Sl. No.')
+                    ->rowIndex(),
                 TextColumn::make('title')
                     ->searchable()
                     ->sortable(),

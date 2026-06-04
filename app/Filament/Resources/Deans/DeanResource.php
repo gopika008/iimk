@@ -24,9 +24,9 @@ use App\Filament\Resources\Deans\Pages\ListDeans;
 use App\Filament\Resources\Deans\Pages\CreateDean;
 use App\Filament\Resources\Deans\Pages\EditDean;
 use Filament\Schemas\Components\Section;
-
+use Filament\Tables\Columns\IconColumn;
 use function Laravel\Prompts\select;
-
+use Filament\Forms\Components\Toggle;
 class DeanResource extends Resource
 {
     protected static ?string $model = Member::class;
@@ -104,6 +104,9 @@ return $schema->schema([
             TextInput::make('type')
                 ->default('Deans And Administration')
                 ->readonly(),
+            Toggle::make('status')
+                ->label('Active Status')
+                ->default(true),
 
             Hidden::make('type_code')
                 ->default('D&A'),
@@ -132,6 +135,9 @@ return $schema->schema([
 
                 TextColumn::make('created_at')
                     ->dateTime(),
+                IconColumn::make('status')
+                    ->boolean()
+                    ->label('Active'),
             ])
             ->actions([
                 \Filament\Actions\EditAction::make(),

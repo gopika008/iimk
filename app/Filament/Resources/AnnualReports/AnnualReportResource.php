@@ -20,6 +20,7 @@ use Filament\Forms\Components\{
 use Filament\Schemas\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use UnitEnum;
+use Illuminate\Support\Facades\Storage;
 
 class AnnualReportResource extends Resource
 {
@@ -32,51 +33,69 @@ class AnnualReportResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-return $schema->schema([
+        return $schema->schema([
 
-    Section::make('Annual Report')
-        ->description('Upload yearly reports in English and Hindi')
-        ->schema([
+            Section::make('Annual Report')
+                ->description('Upload yearly reports in English and Hindi')
+                ->schema([
 
-            TextInput::make('year')
-                ->label('Year')
-                ->numeric()
-                ->required()
-                ->maxLength(4)
+                    TextInput::make('year')
+                        ->label('Year')
+                        ->numeric()
+                        ->required()
+                        ->maxLength(4)
+                        ->columnSpanFull(),
+
+                    FileUpload::make('english_report')
+                        ->label('English Report')
+                        ->directory('annual-reports')
+                        ->acceptedFileTypes(['application/pdf'])
+                        ->downloadable()
+                        ->openable()
+                        ->columnSpanFull(),
+
+                    FileUpload::make('hindi_report')
+                        ->label('Hindi Report')
+                        ->directory('annual-reports')
+                        ->acceptedFileTypes(['application/pdf'])
+                        ->downloadable()
+                        ->openable()
+                        ->columnSpanFull(),
+
+                ])
+                ->columns(1)
                 ->columnSpanFull(),
 
-            FileUpload::make('english_report')
-                ->label('English Report')
-                ->directory('annual-reports')
-                ->acceptedFileTypes(['application/pdf'])
-                ->downloadable()
-                ->openable()
-                ->columnSpanFull(),
-
-            FileUpload::make('hindi_report')
-                ->label('Hindi Report')
-                ->directory('annual-reports')
-                ->acceptedFileTypes(['application/pdf'])
-                ->downloadable()
-                ->openable()
-                ->columnSpanFull(),
-
-        ])
-        ->columns(1)
-        ->columnSpanFull(),
-
-]);
-
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
+                TextColumn::make('sl_no')
+                    ->label('Sl. No.')
+                    ->rowIndex(),
+                TextColumn::make('sl_no')
+                    ->label('Sl. No.')
+                    ->rowIndex(),
                 TextColumn::make('year')
                     ->sortable()
                     ->searchable(),
 
+                TextColumn::make('english_report')
+                    ->label('English Report')
+                    ->icon('heroicon-o-document-text')
+                    ->formatStateUsing(fn() => 'View')
+                    ->url(fn($record) => Storage::url($record->english_report))
+                    ->openUrlInNewTab(),
+
+                TextColumn::make('hindi_report')
+                    ->label('Hindi Report')
+                    ->icon('heroicon-o-document-text')
+                    ->formatStateUsing(fn() => 'View')
+                    ->url(fn($record) => Storage::url($record->hindi_report))
+                    ->openUrlInNewTab(),
                 TextColumn::make('created_at')
                     ->dateTime(),
             ])

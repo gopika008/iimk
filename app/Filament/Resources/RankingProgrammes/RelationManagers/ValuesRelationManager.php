@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Filament\Resources\RankingProgrammes\RelationManagers;
+
 use Filament\Schemas\Schema;
 use App\Filament\Resources\RankingProgrammes\RankingProgrammeResource;
 use Filament\Actions\CreateAction;
@@ -34,6 +35,8 @@ class ValuesRelationManager extends RelationManager
 
                 TextInput::make('ranking_year')
                     ->numeric()
+                    ->minValue(1900)
+                    ->maxValue(2100)
                     ->required(),
 
                 Select::make('rank_scope')
@@ -46,8 +49,8 @@ class ValuesRelationManager extends RelationManager
 
                 TextInput::make('rank_value'),
                 TextInput::make('rank_url')
-                ->label('Rank URL')
-                ->url()
+                    ->label('Rank URL')
+                    ->url()
 
             ]);
     }

@@ -29,7 +29,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Section;
-use Stichoza\GoogleTranslate\GoogleTranslate;
+
 
 class MediaCoverageResource extends Resource
 {
@@ -45,198 +45,93 @@ class MediaCoverageResource extends Resource
     {
         return $schema->schema([
 
-            Section::make('Media Coverage')
-                ->description('Manage press releases and media/news entries')
-                ->schema([
+    Section::make('Media Coverage')
+        ->description('Manage press releases and media/news entries')
+        ->schema([
 
-                    Section::make('English Content')
-                        ->schema([
-
-                            TextInput::make('title.en')
-                                ->label('Title (English)')
-                                ->required()
-                                ->maxLength(255)
-                                ->live(onBlur: true)
-                                ->afterStateUpdated(function ($state, callable $set) {
-                                    if (filled($state)) {
-                                        $set(
-                                            'title.hi',
-                                            GoogleTranslate::trans($state, 'hi', 'en')
-                                        );
-                                    }
-                                }),
-
-                            Textarea::make('description.en')
-                                ->label('Description (English)')
-                                ->rows(5)
-                                ->live(onBlur: true)
-                                ->afterStateUpdated(function ($state, callable $set) {
-                                    if (filled($state)) {
-                                        $set(
-                                            'description.hi',
-                                            GoogleTranslate::trans($state, 'hi', 'en')
-                                        );
-                                    }
-                                }),
-
-                            TextInput::make('paper.en')
-                                ->label('Newspaper / Media Name (English)')
-                                ->placeholder('The Hindu')
-                                ->live(onBlur: true)
-                                ->afterStateUpdated(function ($state, callable $set) {
-                                    if (filled($state)) {
-                                        $set(
-                                            'paper.hi',
-                                            GoogleTranslate::trans($state, 'hi', 'en')
-                                        );
-                                    }
-                                }),
-
-                        ])
-                        ->columnSpan(1),
-
-                    Section::make('Hindi Content')
-                        ->schema([
-
-                            TextInput::make('title.hi')
-                                ->label('Title (Hindi)')
-                                ->required()
-                                ->maxLength(255),
-
-                            Textarea::make('description.hi')
-                                ->label('Description (Hindi)')
-                                ->rows(5),
-
-                            TextInput::make('paper.hi')
-                                ->label('Newspaper / Media Name (Hindi)'),
-
-                        ])
-                        ->columnSpan(1),
-
-                    TextInput::make('link')
-                        ->label('Source Link')
-                        ->url()
-                        ->maxLength(255),
-
-                    DatePicker::make('date')
-                        ->label('Published Date')
-                        ->required(),
-
-                    Select::make('type')
-                        ->label('Type')
-                        ->options([
-                            'in_media' => 'In Media',
-                            'press_release' => 'Press Release',
-                        ])
-                        ->required(),
-
-                    Toggle::make('status')
-                        ->label('Active Status')
-                        ->default(true),
-
-                    FileUpload::make('image')
-                        ->label('Image')
-                        ->image()
-                        ->directory('media-coverages')
-                        ->moveFiles()
-                        ->columnSpanFull(),
-
-                ])
-                ->columns(2)
+            TextInput::make('title')
+                ->label('Title')
+                ->required()
+                ->maxLength(255)
                 ->columnSpanFull(),
 
-        ]);
+            Textarea::make('description')
+                ->label('Description')
+                ->rows(5)
+                ->columnSpanFull(),
+
+            TextInput::make('paper')
+                ->label('Newspaper / Media Name')
+                ->placeholder('Malayala Manorama'),
+
+            TextInput::make('link')
+                ->label('Source Link')
+                ->url()
+                ->maxLength(255),
+
+            DatePicker::make('date')
+                ->label('Published Date')
+                ->required(),
+
+            Select::make('type')
+                ->label('Type')
+                ->options([
+                    'in_media' => 'In Media',
+                    'press_release' => 'Press Release',
+                ])
+                ->required(),
+
+            FileUpload::make('image')
+                ->label('Image')
+                ->image()
+                ->directory('media-coverages')
+                ->moveFiles()
+                ->columnSpanFull(),
+
+            Toggle::make('status')
+                ->label('Active Status')
+                ->default(true),
+
+        ])
+        ->columns(2)
+        ->columnSpanFull(),
+
+]);
     }
 
     public static function table(Table $table): Table
     {
-    return $table
-        ->columns([
+        return $table
+            ->columns([
 
-            ImageColumn::make('image')
-                ->label('Image')
-                ->square()
-                ->size(60),
+                ImageColumn::make('image')
+    ->disk('public')
+    ->square()
+    ->size(80),
 
-            TextColumn::make('title')
-                ->label('Title')
-                ->formatStateUsing(
-                    fn ($record) => $record->getTranslation('title', 'en')
-                )
-                ->description(
-                    fn ($record) => $record->getTranslation('title', 'hi')
-                )
-                ->wrap()
-                ->searchable()
-                ->sortable(),
 
-            TextColumn::make('paper')
-                ->label('Media Name')
-                ->formatStateUsing(
-                    fn ($record) => $record->getTranslation('paper', 'en')
-                )
-                ->description(
-                    fn ($record) => $record->getTranslation('paper', 'hi')
-                )
-                ->wrap()
-                ->searchable(),
+                TextColumn::make('title')
+                    ->searchable()
+                    ->limit(40),
 
-            TextColumn::make('type')
-                ->badge()
-                ->formatStateUsing(fn (string $state) => match ($state) {
-                    'in_media' => 'In Media',
-                    'press_release' => 'Press Release',
-                    default => $state,
-                })
-                ->color(fn (string $state) => match ($state) {
-                    'in_media' => 'info',
-                    'press_release' => 'success',
-                    default => 'gray',
-                }),
+                TextColumn::make('paper')
+                    ->searchable(),
 
-            TextColumn::make('link')
-                ->label('Source')
-                ->url(fn ($record) => $record->link)
-                ->openUrlInNewTab()
-                ->limit(30)
-                ->toggleable(),
+                TextColumn::make('type')
+                    ->badge()
+                    ->colors([
+                        'success' => 'in_media',
+                        'primary' => 'press_release',
+                    ]),
 
-            TextColumn::make('date')
-                ->label('Published Date')
-                ->date('d M Y')
-                ->sortable(),
+                TextColumn::make('date')
+                    ->date(),
 
-            IconColumn::make('status')
-                ->label('Status')
-                ->boolean(),
+                IconColumn::make('status')
+                    ->boolean(),
 
-            TextColumn::make('created_at')
-                ->label('Created')
-                ->since()
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true),
-
-            TextColumn::make('updated_at')
-                ->label('Last Updated')
-                ->since()
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true),
-
-        ])
-        ->filters([
-            \Filament\Tables\Filters\SelectFilter::make('type')
-                ->options([
-                    'in_media' => 'In Media',
-                    'press_release' => 'Press Release',
-                ]),
-
-            \Filament\Tables\Filters\SelectFilter::make('status')
-                ->options([
-                    1 => 'Active',
-                    0 => 'Inactive',
-                ]),
-        ])
-        ->defaultSort('date', 'desc')
+            ])
+            ->defaultSort('date', 'desc')
         ->actions([
             \Filament\Actions\ViewAction::make(),
             \Filament\Actions\EditAction::make(),

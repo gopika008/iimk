@@ -38,9 +38,13 @@ class HomeController extends Controller
     public function dean()
     {
         $members = Member::where('type_code', 'D&A')->orderBy('created_at')->get();
-       // dd($members);
-
-        return view('pages.about.deans', compact('members'));
+        //return view('pages.about.deans', compact('members'));
+        return view('deans', compact('members'));
+    }
+    public function board_of_governors()
+    {
+        $members = Member::where('type_code', 'BOg')->orderBy('created_at')->get();
+        return view('board-of-governors', compact('members'));
     }
 
     public function accreditation()

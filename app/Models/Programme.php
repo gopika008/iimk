@@ -19,4 +19,8 @@ class Programme extends Model
     {
         return $this->hasMany(StudentDirectory::class);
     }
+    public function achievements()
+    {
+        return $this->hasMany(Achievement::class);
+    }
 }

@@ -9,7 +9,7 @@ use Filament\Resources\Pages\ListRecords;
 class ListDeans extends ListRecords
 {
     protected static string $resource = DeanResource::class;
-
+protected string $view = 'filament.list-deans';
     protected function getHeaderActions(): array
     {
         return [
